@@ -12,11 +12,6 @@ program in different languages, design products, do cool DevOps things, and
 learn. We do all sorts of stuff, so drop us a line if you've got a problem that
 needs solving, or if you just want to improve your life through technology.
 
-I'm not looking for alternate employment, but I absolutely love criticizing
-people's art. So feel free to send me demos of your latest app, or a website
-link, and I'll happily reply with a few thoughtful insults. I offer this
-service completely free of charge.
-
 > On two occasions I have been asked, — "Pray, Mr. Babbage, if you put into the
 > machine wrong figures, will the right answers come out?" In one case a member
 > of the Upper, and in the other a member of the Lower, House put this
