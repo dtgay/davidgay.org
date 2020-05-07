@@ -1,0 +1,61 @@
+davidgay
+David Gay
+Lead software developer for Kirkwork.
+Baldwinsville, NY, USA
+==================================================================
+https://keybase.io/davidgay
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://davidgay.org
+  * I am davidgay (https://keybase.io/davidgay) on keybase.
+  * I have a public key ASB5lE0_lMpNYVbloPzLfhfMueav4GqqpZVyQgIrB7GxPwo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "012079944d3f94ca4d6156e5a0fccb7e17ccb9e6afe06aaaa5957242022b07b1b13f0a",
+      "host": "keybase.io",
+      "kid": "012079944d3f94ca4d6156e5a0fccb7e17ccb9e6afe06aaaa5957242022b07b1b13f0a",
+      "uid": "e40a9c748492dc614b170c578dc28e19",
+      "username": "davidgay"
+    },
+    "merkle_root": {
+      "ctime": 1588812624,
+      "hash": "d057cac1f8fca2dd3386fc58126e4a585e694638885b1b95c852f3465b230484d4c3f853e56b9ab8168c98f468003eabbbc9ccec648904a686fc9a0addc16427",
+      "hash_meta": "3b8c0fc9294a1ddd1a717924332b4b4f4fc64533a1a65ac32ab94d5a6e2d2acb",
+      "seqno": 16185426
+    },
+    "service": {
+      "entropy": "HH3YluqXMbokBX0WhnbTNX6e",
+      "hostname": "davidgay.org",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.4.2"
+  },
+  "ctime": 1588812634,
+  "expire_in": 504576000,
+  "prev": "cca4e1f5380b0d736b568342ad90178f06150b1ed4efbf006f4a134dd97c3807",
+  "seqno": 6,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgeZRNP5TKTWFW5aD8y34XzLnmr+BqqqWVckICKwexsT8Kp3BheWxvYWTESpcCBsQgzKTh9TgLDXNrVoNCrZAXjwYVCx7U778Ab0oTTdl8OAfEIGkM+xsf8Jqii7lzWsW0of++aC3PakjXM520GAgQuq9nAgHCo3NpZ8RA1CG6dqJh2Tvqfm/2Ra0MuMiEAAgejDXzPdVCLz4uQ6Y1ojiaWiQDjAAAJ3KcqmzxuyoDkdbOZ6qTAR+Yvz3wB6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEINXvMdVkgQ/mBq9Hi77bIW4+HHaJwcqDbQ448v/Zy5m+o3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/davidgay
+
+==================================================================
+
