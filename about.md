@@ -24,8 +24,7 @@ thoughts shared on this site are not necessarily those of Kirkwork, which is a
 ## Social
 
 - **[Dev.to](https://dev.to/davidgay)** - I just made this when I found out
-  it's an open-source Rails app and you can generate posts from your external
-  blog via RSS.
+  it's an open-source Rails app and has some cool features.
 - **[GitHub](https://github.com/dtgay)** - Pronouced "gi-thoob".
 - **[Goodreads](https://www.goodreads.com/davidgay)** - Books I've read, am
   reading, and want to read. This is new this year and I'm sure I'm missing
