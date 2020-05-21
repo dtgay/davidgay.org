@@ -42,7 +42,6 @@ plugins:
   - jekyll-archives
   - jekyll-feed
   - jekyll-paginate
-  - jekyll-sitemap
 
 permalink: /:slugified_categories/:title/
 paginate_path: /posts/:num/
