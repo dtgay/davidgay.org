@@ -6,20 +6,22 @@ permalink: /about/
 
 Hello! I'm David Gay.
 
-The point of my creating this blog is to write about thoughts, ideas, and
-questions I have about software development and computer programming. For a
-long time, I didn't blog because I am not particularly taken with the current
-climate of writing for ad impressions and branding oneself. But I figured
-there's no reason why I can't do my own thing. Maybe some other developer
-will resonate with my meditations and will [send me a nice, validating
-email](mailto:hello@davidgay.org). Who knows.
+The point of my creating this blog is to write about things that interest me.
+I spend a lot of my time doing software development, reading, and listening
+to music, so a lot of the content will be about that.
 
 My favorite programming language is Ruby. My first was BASIC. Most recently,
 I learned some Clojure.
 
-I'm the lead software developer at [Kirkwork](https://kirkworkllc.com), but the
-thoughts shared on this site are not necessarily those of Kirkwork, which is a
-"limited liability company", which means it can have thoughts of its own.
+My favorite book is [Cat's
+Cradle](https://www.goodreads.com/book/show/135479.Cat_s_Cradle) by Kurt
+Vonnegut.
+
+I don't have a favorite band. Some of my favorite albums are The Blue Nile's
+[Hats](https://en.wikipedia.org/wiki/Hats_(album)) and Van Morrison's
+[Astral Weeks](https://en.wikipedia.org/wiki/Astral_Weeks).
+
+I'm the lead software developer at [Kirkwork](https://kirkworkllc.com).
 
 ## Social
 
