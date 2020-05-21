@@ -6,11 +6,11 @@ permalink: /about/
 
 Hello! I'm David Gay.
 
-The point my creating this blog is to write about thoughts, ideas, and
+The point of my creating this blog is to write about thoughts, ideas, and
 questions I have about software development and computer programming. For a
 long time, I didn't blog because I am not particularly taken with the current
 climate of writing for ad impressions and branding oneself. But I figured
-there's no reason that I can't do my own thing. Maybe some other developer
+there's no reason why I can't do my own thing. Maybe some other developer
 will resonate with my meditations and will [send me a nice, validating
 email](mailto:hello@davidgay.org). Who knows.
 
@@ -39,6 +39,7 @@ thoughts shared on this site are not necessarily those of Kirkwork, which is a
   on the Ruby instance! Cool!
 - **[Product Hunt](https://www.producthunt.com/@davidgay)** - I upvote new tech
   I find cool, interesting, or useful.
+- **[Stack Overflow](https://stackoverflow.com/users/1196465/david-gay?tab=profile)**
 
 ## This Site
 
