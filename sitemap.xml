@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://davidgay.org/meta/intro/</loc>
+<lastmod>2020-05-22T13:20:00-04:00</lastmod>
+</url>
+<url>
 <loc>https://davidgay.org/about/</loc>
 </url>
 <url>
@@ -10,6 +14,6 @@
 <loc>https://davidgay.org/</loc>
 </url>
 <url>
-<loc>https://davidgay.org/</loc>
+<loc>https://davidgay.org/categories/meta/</loc>
 </url>
 </urlset>

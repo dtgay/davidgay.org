@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-05-22T11:59:21-04:00</updated>
+  <updated>2020-05-22T18:03:33-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -24,5 +24,63 @@
     </author>
   
 
+  
+  
+    <entry>
+      
+      <title type="html">Intro</title>
+      
+      
+      <link href="https://davidgay.org/meta/intro/" rel="alternate" type="text/html" title="Intro" />
+      
+      <published>2020-05-22T13:20:00-04:00</published>
+      <updated>2020-05-22T13:20:00-04:00</updated>
+      <id>https://davidgay.org/meta/intro</id>
+      <content type="html" xml:base="https://davidgay.org/meta/intro/">&lt;p&gt;2020 has been a hallmark year for me. Continuing that trend, I’ve decided to
+start blogging again. It has been many years since I blogged. I was a young man
+then, spry, and filled to the brim with strong opinions on topics with which I
+had a nebulous understanding. Now, going on twenty-seven, the sun is beginning
+to set on my youth as I transition into my second year paying for health
+insurance. The season for commissioning an &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Picture_of_Dorian_Gray&quot;&gt;enchanted painting&lt;/a&gt; is passing
+me by. Heavy falls the veil of twilight years.&lt;/p&gt;
+
+&lt;p&gt;This website is meant to be a writing project. I hope it will be enjoyable
+reading, but I’m not here for clicks. By keeping this blog I hope to improve my
+capacity for conveying ideas and feelings. The scope of topics is ill-defined
+and the thesis is absent. All I’m promising is writing.&lt;/p&gt;
+
+&lt;p&gt;Like &lt;a href=&quot;https://en.wikipedia.org/wiki/Deacon_Blues&quot;&gt;Deacon Blues&lt;/a&gt;, I’ll play just what I feel. I’ll categorize and tag
+posts so you can skip hearing about my opinions on notetaking software and get
+right to my thoughts on Beck’s &lt;a href=&quot;https://en.wikipedia.org/wiki/Sea_Change_(album)&quot;&gt;Sea Change&lt;/a&gt;. Or vice versa. Thanks to the
+gifts of computer science, the power is in your hands.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      
+        <author>
+            <name>David Gay</name>
+          
+          
+        </author>
+      
+
+      
+        <category term="meta" />
+      
+
+      
+
+      
+        <summary type="html">2020 has been a hallmark year for me. Continuing that trend, I’ve decided to start blogging again. It has been many years since I blogged. I was a young man then, spry, and filled to the brim with strong opinions on topics with which I had a nebulous understanding. Now, going on twenty-seven, the sun is beginning to set on my youth as I transition into my second year paying for health insurance. The season for commissioning an enchanted painting is passing me by. Heavy falls the veil of twilight years. This website is meant to be a writing project. I hope it will be enjoyable reading, but I’m not here for clicks. By keeping this blog I hope to improve my capacity for conveying ideas and feelings. The scope of topics is ill-defined and the thesis is absent. All I’m promising is writing. Like Deacon Blues, I’ll play just what I feel. I’ll categorize and tag posts so you can skip hearing about my opinions on notetaking software and get right to my thoughts on Beck’s Sea Change. Or vice versa. Thanks to the gifts of computer science, the power is in your hands.</summary>
+      
+
+      
+      
+    </entry>
+  
   
 </feed>
