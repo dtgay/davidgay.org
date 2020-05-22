@@ -6,9 +6,9 @@ permalink: /about/
 
 Hello! I'm David Gay.
 
-The point of my creating this blog is to write about things that interest me.
+The point of my creating this site is to write about things that interest me.
 I spend a lot of my time doing software development, reading, and listening
-to music, so a lot of the content will be about that.
+to music, so much of the content will be about that.
 
 My favorite programming language is Ruby. My first was BASIC. Most recently,
 I learned some Clojure.
@@ -26,19 +26,17 @@ I'm the lead software developer at [Kirkwork](https://kirkworkllc.com).
 ## Social
 
 - **[Dev.to](https://dev.to/davidgay)** - I just made this when I found out
-  it's an open-source Rails app and has some cool features.
-- **[GitHub](https://github.com/dtgay)** - Pronouced "gi-thoob".
-- **[Goodreads](https://www.goodreads.com/davidgay)** - Books I've read, am
-  reading, and want to read. This is new this year and I'm sure I'm missing
-  books.
+  it's an open-source Rails app and has some cool features. I probably won't
+  be writing posts, though.
+- **[GitHub](https://github.com/dtgay)**
+- **[Goodreads](https://www.goodreads.com/davidgay)** - This is new this year
+  and I'm sure I'm missing books.
 - **[Hacker News](https://news.ycombinator.com/user?id=dtgay)** - New account,
   but it's the one I'm using going forward.
-- **[Letterboxd](https://letterboxd.com/davidgay/)** - Films I've watched and
-  want to watch. I just made this in May 2020 and I certainly haven't logged
-  everything I've seen yet.
-- **[Mastodon](https://ruby.social/@david)** -
-  I made one of these to check it out and would you look at that, I got @david
-  on the Ruby instance! Cool!
+- **[Letterboxd](https://letterboxd.com/davidgay/)** - I just made this in May
+  2020 and I certainly haven't logged everything I've seen yet.
+- **[Mastodon](https://ruby.social/@david)** - I made one of these to check it
+  out and would you look at that, I got @david on the Ruby instance! Cool!
 - **[Product Hunt](https://www.producthunt.com/@davidgay)** - I upvote new tech
   I find cool, interesting, or useful.
 - **[Stack Overflow](https://stackoverflow.com/users/1196465/david-gay?tab=profile)**

@@ -8,7 +8,7 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 #
-# If you need help with YAML syntax, here are some quick references for you: 
+# If you need help with YAML syntax, here are some quick references for you:
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 #
@@ -20,22 +20,22 @@
 
 title: David Gay
 author: David Gay
-email: hello@davidgay.org
 description: >- # this means to ignore newlines until "baseurl:"
   Software developer from New York. Writes about software development, music,
   books, and other interests.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://davidgay.org" # the base hostname & protocol for your site, e.g. http://example.com
-github_username: dtgay
-google_analytics: UA-167323755-1
+lang: en
 timezone: America/New_York
 
-defaults:
-  -
-    scope:
-      path: ""
-    values:
-      author: "David Gay"
+# Social media
+github_username: dtgay
+twitter_username:
+twitter_image:
+facebook_app_id:
+facebook_image:
+google_analytics: UA-167323755-1
+comments: false
 
 # Build settings
 theme: jekyll-whiteglass
@@ -43,20 +43,6 @@ plugins:
   - jekyll-archives
   - jekyll-paginate
   - jekyll-sitemap
-
-permalink: /:slugified_categories/:title/
-paginate_path: /posts/:num/
-paginate: 5
-
-jekyll-archives:
-  enabled:
-    - categories
-    - tags
-  layout: category_archives
-  permalinks:
-    category: /categories/:name/
-    tag: /tags/:name/
-
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -77,3 +63,33 @@ jekyll-archives:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+exclude:
+  - README.md
+
+# Outputting
+permalink: /:slugified-categories/:title/
+
+# Markdown settings
+markdown: kramdown
+excerpt_separator: "<!-- more -->"
+kramdown:
+  auto_ids: false
+  enable_coderay: false
+  entity_output: as_char
+  footnote_nr: 1
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  toc_levels: 1..6
+
+# jekyll-archives
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layout: category_archives
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
+
+# jekyll-paginate
+paginate_path: /posts/:num/
+paginate: 5
