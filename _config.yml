@@ -22,8 +22,8 @@ title: David Gay
 author: David Gay
 email: hello@davidgay.org
 description: >- # this means to ignore newlines until "baseurl:"
-  Software developer from New York. Writes about software development, music,
-  books, and other interests.
+  Software developer from New York. Writes about software development, apps,
+  websites, music, books, and other interests.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://davidgay.org" # the base hostname & protocol for your site, e.g. http://example.com
 lang: en
