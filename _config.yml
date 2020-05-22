@@ -73,7 +73,7 @@ permalink: /:slugified-categories/:title/
 markdown: kramdown
 excerpt_separator: "<!-- more -->"
 kramdown:
-  auto_ids: false
+  auto_ids: true
   enable_coderay: false
   entity_output: as_char
   footnote_nr: 1
