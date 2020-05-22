@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <generator uri="http://jekyllrb.com" version="4.0.1">Jekyll</generator>
+  
+  
+  <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
+  <updated>2020-05-22T00:21:44+00:00</updated>
+  <id>https://davidgay.org//</id>
+
+  
+    <title type="html">David Gay</title>
+  
+
+  
+    <subtitle>Software developer from New York. Writes about software development, music, books, and other interests.</subtitle>
+  
+
+  
+    <author>
+        <name>David Gay</name>
+      
+      
+    </author>
+  
+
+  
+</feed>
