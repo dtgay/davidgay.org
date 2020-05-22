@@ -68,7 +68,7 @@ exclude:
   - README.md
 
 # Outputting
-permalink: /:slugified-categories/:title/
+permalink: /:categories/:title/
 
 # Markdown settings
 markdown: kramdown
