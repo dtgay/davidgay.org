@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-05-22T18:21:17-04:00</updated>
+  <updated>2020-05-25T18:17:06-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -28,6 +28,126 @@
   
     <entry>
       
+      <title type="html">Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim</title>
+      
+      
+      <link href="https://davidgay.org/software/notational-fzf-vim/" rel="alternate" type="text/html" title="Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim" />
+      
+      <published>2020-05-25T14:11:00-04:00</published>
+      <updated>2020-05-25T14:11:00-04:00</updated>
+      <id>https://davidgay.org/software/notational-fzf-vim</id>
+      <content type="html" xml:base="https://davidgay.org/software/notational-fzf-vim/">&lt;p&gt;Like many developers, I like to take notes during the day. And like many
+developers, I spent a lot of time trying out different apps and systems for
+notetaking, especially during the last couple years. I’ve tried vimwiki,
+OneNote, Bear, Gollum, Notion, you name it. Today I’m going to share the system
+I’m using now, and what my requirements were.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;TLDR:&lt;/strong&gt; &lt;a href=&quot;https://github.com/alok/notational-fzf-vim&quot;&gt;notational-fzf-vim&lt;/a&gt;&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;requirements&quot;&gt;Requirements&lt;/h2&gt;
+
+&lt;p&gt;These are must-haves for me, and are responsible for my jumping from system to
+system. It’s difficult to find different apps that tick all these boxes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Notes must be in Markdown files.&lt;/li&gt;
+  &lt;li&gt;I must be able to easily back up all notes with Git.&lt;/li&gt;
+  &lt;li&gt;I must be able to use Vim or Vim-like keybindings.&lt;/li&gt;
+  &lt;li&gt;Notetaking app must not look like shit.&lt;/li&gt;
+  &lt;li&gt;Notes cannot be locked up within en vogue SaaS app, even if it has a
+(probably garbage) export option.&lt;/li&gt;
+  &lt;li&gt;I want something more than just manually managing text files.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It would also be cool to be able to create links between notes, but only if
+they auto-updated when I renamed or moved files. But I could look past a
+solution not having linking.&lt;/p&gt;
+
+&lt;p&gt;During my long search, nothing I tried was quite satisfying. I was extremely
+frustrated because it seemed like what I wanted was &lt;em&gt;pretty simple&lt;/em&gt; and I felt
+like it &lt;em&gt;should&lt;/em&gt; exist, and I knew it &lt;em&gt;could&lt;/em&gt; exist because &lt;a href=&quot;http://notational.net/&quot;&gt;Notational
+Velocity&lt;/a&gt; and &lt;a href=&quot;https://brettterpstra.com/projects/nvalt/&quot;&gt;nvAlt&lt;/a&gt; exist, but they didn’t satisfy all my requirements.
+I had started building my own solution in Ruby when I found
+&lt;a href=&quot;https://github.com/alok/notational-fzf-vim&quot;&gt;notational-fzf-vim&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution-notational-fzf-vim&quot;&gt;Solution: notational-fzf-vim&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/alok/notational-fzf-vim&quot;&gt;notational-fzf-vim&lt;/a&gt; is a simple Vim plugin that gives you Notational
+Velocity-like functionality, powered by &lt;a href=&quot;https://github.com/junegunn/fzf&quot;&gt;fzf&lt;/a&gt; and &lt;a href=&quot;https://github.com/BurntSushi/ripgrep&quot;&gt;ripgrep&lt;/a&gt;, and nothing
+more. Hit your keybinding and search for a file in your configured directories,
+or create one if it doesn’t exist. And it’s lightning-fast.&lt;/p&gt;
+
+&lt;p&gt;I’m thrilled to have found it. On top of that, I discovered fzf and ripgrep,
+two awesome utilities that I had never seen before and now use daily.&lt;/p&gt;
+
+&lt;p&gt;If you’re interested, there’s a good readme in the &lt;a href=&quot;https://github.com/alok/notational-fzf-vim&quot;&gt;git repo&lt;/a&gt; that will hook
+you up proper. It speaks for itself; don’t forget dependencies and required
+settings. Follow those instructions, and then you’ll probably want to set a
+keybinding. Here’s mine, which activates notational-fzf-vim when I hit &lt;code class=&quot;highlighter-rouge&quot;&gt;F3&lt;/code&gt; in
+normal, visual, or insert mode (&lt;code class=&quot;highlighter-rouge&quot;&gt;F3&lt;/code&gt; is fast and easy with my keyboard config):&lt;/p&gt;
+
+&lt;div class=&quot;language-vim highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;noremap &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;silent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;F3&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;NV&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+vnoremap &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;silent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;F3&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;C&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;C&lt;span class=&quot;p&quot;&gt;&amp;gt;:&lt;/span&gt;NV&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+inoremap &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;silent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;F3&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;C&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;O&lt;span class=&quot;p&quot;&gt;&amp;gt;:&lt;/span&gt;NV&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;notational-fzf-vim allows me to satisfy all my requirements. Plus I can use the
+vim environment I already have, and do Git backups however I want. It doesn’t
+have the optional linking I mentioned, but I’m cool with that because using
+links would actually be &lt;em&gt;slower&lt;/em&gt; than hitting my &lt;code class=&quot;highlighter-rouge&quot;&gt;:NV&lt;/code&gt; binding and typing. I
+know, because I used vimwiki and this is way faster.&lt;/p&gt;
+
+&lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;Questions, comments, or tips for me? See a mistake in this post? &lt;a href=&quot;mailto:hello@davidgay.org&quot;&gt;Send me an
+email.&lt;/a&gt;&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      
+        <author>
+            <name>David Gay</name>
+          
+          
+        </author>
+      
+
+      
+        <category term="software" />
+      
+
+      
+        <category term="notetaking" />
+      
+        <category term="vim" />
+      
+        <category term="tools" />
+      
+        <category term="markdown" />
+      
+        <category term="fzf" />
+      
+        <category term="ripgrep" />
+      
+
+      
+        <summary type="html">Like many developers, I like to take notes during the day. And like many developers, I spent a lot of time trying out different apps and systems for notetaking, especially during the last couple years. I’ve tried vimwiki, OneNote, Bear, Gollum, Notion, you name it. Today I’m going to share the system I’m using now, and what my requirements were. TLDR: notational-fzf-vim</summary>
+      
+
+      
+      
+    </entry>
+  
+  
+  
+    <entry>
+      
       <title type="html">Intro</title>
       
       
@@ -43,6 +163,8 @@ had a nebulous understanding. Now, going on twenty-seven, the sun is beginning
 to set on my youth as I transition into my second year paying for health
 insurance. The season for commissioning an &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Picture_of_Dorian_Gray&quot;&gt;enchanted painting&lt;/a&gt; is passing
 me by. Heavy falls the veil of twilight years.&lt;/p&gt;
+
+&lt;!-- more --&gt;
 
 &lt;p&gt;This website is meant to be a writing project. I hope it will be enjoyable
 reading, but I’m not here for clicks. By keeping this blog I hope to improve my
@@ -75,7 +197,7 @@ gifts of computer science, the power is in your hands.&lt;/p&gt;</content>
       
 
       
-        <summary type="html">2020 has been a hallmark year for me. Continuing that trend, I’ve decided to start blogging again. It has been many years since I blogged. I was a young man then, spry, and filled to the brim with strong opinions on topics with which I had a nebulous understanding. Now, going on twenty-seven, the sun is beginning to set on my youth as I transition into my second year paying for health insurance. The season for commissioning an enchanted painting is passing me by. Heavy falls the veil of twilight years. This website is meant to be a writing project. I hope it will be enjoyable reading, but I’m not here for clicks. By keeping this blog I hope to improve my capacity for conveying ideas and feelings. The scope of topics is ill-defined and the thesis is absent. All I’m promising is writing. Like Deacon Blues, I’ll play just what I feel. I’ll categorize and tag posts so you can skip hearing about my opinions on notetaking software and get right to my thoughts on Beck’s Sea Change. Or vice versa. Thanks to the gifts of computer science, the power is in your hands.</summary>
+        <summary type="html">2020 has been a hallmark year for me. Continuing that trend, I’ve decided to start blogging again. It has been many years since I blogged. I was a young man then, spry, and filled to the brim with strong opinions on topics with which I had a nebulous understanding. Now, going on twenty-seven, the sun is beginning to set on my youth as I transition into my second year paying for health insurance. The season for commissioning an enchanted painting is passing me by. Heavy falls the veil of twilight years.</summary>
       
 
       

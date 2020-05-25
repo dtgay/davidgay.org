@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  
+  
+  <title>Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim</title>
+  <meta name="description" content="Like many developers, I like to take notes during the day. And like many developers, I spent a lot of time trying out different apps and systems for notetaking, especially during the last couple years. I’ve tried vimwiki, OneNote, Bear, Gollum, Notion, you name it. Today I’m going to share the system I’m using now, and what my requirements were. TLDR: notational-fzf-vim">
+  
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://davidgay.org/software/notational-fzf-vim/">
+  <link rel="shortcut icon" type="image/png" href="/favicon.png">
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="David Gay" href="https://davidgay.org/feed.xml">
+
+  
+
+  
+  <meta property="og:title" content="Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim">
+  <meta property="og:site_name" content="David Gay">
+  <meta property="og:url" content="https://davidgay.org/software/notational-fzf-vim/">
+  <meta property="og:description" content="Like many developers, I like to take notes during the day. And like many developers, I spent a lot of time trying out different apps and systems for notetaking, especially during the last couple years. I’ve tried vimwiki, OneNote, Bear, Gollum, Notion, you name it. Today I’m going to share the system I’m using now, and what my requirements were. TLDR: notational-fzf-vim">
+  
+  
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:title" content="Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim">
+  <meta name="twitter:description" content="Like many developers, I like to take notes during the day. And like many developers, I spent a lot of time trying out different apps and systems for notetaking, especially during the last couple ye...">
+  
+  
+
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700&display=swap" rel="stylesheet">
+
+  
+  <!-- Google Analytics -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-167323755-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">David Gay</a>
+
+    <nav class="site-nav">
+      
+        
+        <a class="page-link" href="/about/">About</a>
+      
+        
+        <a class="page-link" href="/archives/">Archives</a>
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    
+      <h1 class="post-title" itemprop="name headline">Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim</h1>
+    
+    <p class="post-meta"><time datetime="2020-05-25T14:11:00-04:00" itemprop="datePublished">May 25, 2020</time> •
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/categories/software/">software</a>
+      
+    
+  
+
+
+ •
+  
+    
+    
+      
+        <a href="/tags/notetaking/">notetaking</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+        <a href="/tags/vim/">vim</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+        <a href="/tags/tools/">tools</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/markdown/">markdown</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/fzf/">fzf</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/ripgrep/">ripgrep</a>
+      
+    
+      
+    
+      
+    
+  
+
+</p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>Like many developers, I like to take notes during the day. And like many
+developers, I spent a lot of time trying out different apps and systems for
+notetaking, especially during the last couple years. I’ve tried vimwiki,
+OneNote, Bear, Gollum, Notion, you name it. Today I’m going to share the system
+I’m using now, and what my requirements were.</p>
+
+<p><strong>TLDR:</strong> <a href="https://github.com/alok/notational-fzf-vim">notational-fzf-vim</a></p>
+
+<!-- more -->
+
+<h2 id="requirements">Requirements</h2>
+
+<p>These are must-haves for me, and are responsible for my jumping from system to
+system. It’s difficult to find different apps that tick all these boxes:</p>
+
+<ul>
+  <li>Notes must be in Markdown files.</li>
+  <li>I must be able to easily back up all notes with Git.</li>
+  <li>I must be able to use Vim or Vim-like keybindings.</li>
+  <li>Notetaking app must not look like shit.</li>
+  <li>Notes cannot be locked up within en vogue SaaS app, even if it has a
+(probably garbage) export option.</li>
+  <li>I want something more than just manually managing text files.</li>
+</ul>
+
+<p>It would also be cool to be able to create links between notes, but only if
+they auto-updated when I renamed or moved files. But I could look past a
+solution not having linking.</p>
+
+<p>During my long search, nothing I tried was quite satisfying. I was extremely
+frustrated because it seemed like what I wanted was <em>pretty simple</em> and I felt
+like it <em>should</em> exist, and I knew it <em>could</em> exist because <a href="http://notational.net/">Notational
+Velocity</a> and <a href="https://brettterpstra.com/projects/nvalt/">nvAlt</a> exist, but they didn’t satisfy all my requirements.
+I had started building my own solution in Ruby when I found
+<a href="https://github.com/alok/notational-fzf-vim">notational-fzf-vim</a>.</p>
+
+<h2 id="solution-notational-fzf-vim">Solution: notational-fzf-vim</h2>
+
+<p><a href="https://github.com/alok/notational-fzf-vim">notational-fzf-vim</a> is a simple Vim plugin that gives you Notational
+Velocity-like functionality, powered by <a href="https://github.com/junegunn/fzf">fzf</a> and <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a>, and nothing
+more. Hit your keybinding and search for a file in your configured directories,
+or create one if it doesn’t exist. And it’s lightning-fast.</p>
+
+<p>I’m thrilled to have found it. On top of that, I discovered fzf and ripgrep,
+two awesome utilities that I had never seen before and now use daily.</p>
+
+<p>If you’re interested, there’s a good readme in the <a href="https://github.com/alok/notational-fzf-vim">git repo</a> that will hook
+you up proper. It speaks for itself; don’t forget dependencies and required
+settings. Follow those instructions, and then you’ll probably want to set a
+keybinding. Here’s mine, which activates notational-fzf-vim when I hit <code class="highlighter-rouge">F3</code> in
+normal, visual, or insert mode (<code class="highlighter-rouge">F3</code> is fast and easy with my keyboard config):</p>
+
+<div class="language-vim highlighter-rouge"><div class="highlight"><pre class="highlight"><code>noremap <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>F3<span class="p">&gt;</span> <span class="p">:</span>NV<span class="p">&lt;</span>CR<span class="p">&gt;</span>
+vnoremap <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>F3<span class="p">&gt;</span> <span class="p">&lt;</span>C<span class="p">-</span>C<span class="p">&gt;:</span>NV<span class="p">&lt;</span>CR<span class="p">&gt;</span>
+inoremap <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>F3<span class="p">&gt;</span> <span class="p">&lt;</span>C<span class="p">-</span>O<span class="p">&gt;:</span>NV<span class="p">&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div></div>
+
+<p>notational-fzf-vim allows me to satisfy all my requirements. Plus I can use the
+vim environment I already have, and do Git backups however I want. It doesn’t
+have the optional linking I mentioned, but I’m cool with that because using
+links would actually be <em>slower</em> than hitting my <code class="highlighter-rouge">:NV</code> binding and typing. I
+know, because I used vimwiki and this is way faster.</p>
+
+<h2 id="feedback">Feedback</h2>
+
+<p>Questions, comments, or tips for me? See a mistake in this post? <a href="mailto:hello@davidgay.org">Send me an
+email.</a></p>
+
+
+  </div>
+
+  
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <p>
+      
+
+&copy; David Gay - <a href="mailto:hello@davidgay.org">Email</a> me - Subscribe via <a href="https://davidgay.org/feed.xml">RSS</a>
+
+    </p>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
