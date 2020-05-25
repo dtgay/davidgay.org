@@ -4,8 +4,7 @@ title: "About"
 permalink: /about/
 ---
 
-Hello! I'm David Gay. You can read my [intro post][1] to what this site is
-about.
+Hello! I'm David Gay. Software developer. Reader. Writer. Listener.
 
 Some stuff about me:
 
@@ -21,14 +20,13 @@ Some stuff about me:
 
 - **[Dev.to](https://dev.to/davidgay)**
 - **[GitHub](https://github.com/dtgay)**
-- **[Goodreads](https://www.goodreads.com/davidgay)** - This is new and I'm
-  sure I'm missing books.
-- **[Hacker News](https://news.ycombinator.com/user?id=dtgay)** - New account,
-  but it's the one I'm using going forward.
-- **[Letterboxd](https://letterboxd.com/davidgay/)** - New and I'm sure I'm
-  missing films.
+- **[Goodreads](https://www.goodreads.com/davidgay)** - Newish and incomplete.
+- **[Hacker News](https://news.ycombinator.com/user?id=dtgay)** - Using this
+account now (I wanted a new username).
+- **[Letterboxd](https://letterboxd.com/davidgay/)** - New and incomplete.
 - **[Mastodon](https://ruby.social/@david)**
 - **[Product Hunt](https://www.producthunt.com/@davidgay)**
+- **[rym](https://rateyourmusic.com/~davidgay)** - _Brand_ new, very incomplete.
 - **[Stack Overflow](https://stackoverflow.com/users/1196465/david-gay?tab=profile)**
 
 ## This Site
