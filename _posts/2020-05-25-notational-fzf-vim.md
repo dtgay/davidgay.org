@@ -12,9 +12,9 @@ notetaking, especially during the last couple years. I've tried vimwiki,
 OneNote, Bear, Gollum, Notion, you name it. Today I'm going to share the system
 I'm using now, and what my requirements were.
 
-**TLDR:** [notational-fzf-vim][3]
-
 <!-- more -->
+
+**TLDR:** [notational-fzf-vim][3]
 
 ## Requirements
 
