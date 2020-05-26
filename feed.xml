@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-05-25T18:38:23-04:00</updated>
+  <updated>2020-05-26T12:36:12-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -42,9 +42,9 @@ notetaking, especially during the last couple years. I’ve tried vimwiki,
 OneNote, Bear, Gollum, Notion, you name it. Today I’m going to share the system
 I’m using now, and what my requirements were.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;TLDR:&lt;/strong&gt; &lt;a href=&quot;https://github.com/alok/notational-fzf-vim&quot;&gt;notational-fzf-vim&lt;/a&gt;&lt;/p&gt;
-
 &lt;!-- more --&gt;
+
+&lt;p&gt;&lt;strong&gt;TLDR:&lt;/strong&gt; &lt;a href=&quot;https://github.com/alok/notational-fzf-vim&quot;&gt;notational-fzf-vim&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;requirements&quot;&gt;Requirements&lt;/h2&gt;
 
@@ -137,7 +137,7 @@ email.&lt;/a&gt;&lt;/p&gt;</content>
       
 
       
-        <summary type="html">Like many developers, I like to take notes during the day. And like many developers, I spent a lot of time trying out different apps and systems for notetaking, especially during the last couple years. I’ve tried vimwiki, OneNote, Bear, Gollum, Notion, you name it. Today I’m going to share the system I’m using now, and what my requirements were. TLDR: notational-fzf-vim</summary>
+        <summary type="html">Like many developers, I like to take notes during the day. And like many developers, I spent a lot of time trying out different apps and systems for notetaking, especially during the last couple years. I’ve tried vimwiki, OneNote, Bear, Gollum, Notion, you name it. Today I’m going to share the system I’m using now, and what my requirements were.</summary>
       
 
       
