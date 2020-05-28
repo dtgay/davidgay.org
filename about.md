@@ -1,7 +1,9 @@
 ---
 layout: page
-title: "About"
 permalink: /about/
+description: >-
+  Hello! I'm David Gay. Software developer. Reader. Writer. Listener.
+title: "About"
 ---
 
 Hello! I'm David Gay. Software developer. Reader. Writer. Listener.
