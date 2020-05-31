@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  
+  
+  <title>Quick and Clear Polymorphic Has Many Through Associations in Rails</title>
+  <meta name="description" content="Concise explanation of setting up a polymorphic has_many :through association in Ruby on Rails, with examples.">
+  
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://davidgay.org/programming/rails-polymorphic-has-many-through/">
+  <link rel="shortcut icon" type="image/png" href="/favicon.png">
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="David Gay" href="https://davidgay.org/feed.xml">
+
+  
+
+  
+  <meta property="og:title" content="Quick and Clear Polymorphic Has Many Through Associations in Rails">
+  <meta property="og:site_name" content="David Gay">
+  <meta property="og:url" content="https://davidgay.org/programming/rails-polymorphic-has-many-through/">
+  <meta property="og:description" content="Concise explanation of setting up a polymorphic has_many :through association in Ruby on Rails, with examples.">
+  
+  
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:title" content="Quick and Clear Polymorphic Has Many Through Associations in Rails">
+  <meta name="twitter:description" content="Concise explanation of setting up a polymorphic has_many :through association in Ruby on Rails, with examples.">
+  
+  
+
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700&display=swap" rel="stylesheet">
+
+  
+  <!-- Google Analytics -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-167323755-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">David Gay</a>
+
+    <nav class="site-nav">
+      
+        
+        <a class="page-link" href="/about/">About</a>
+      
+        
+        <a class="page-link" href="/archives/">Archives</a>
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    
+      <h1 class="post-title" itemprop="name headline">Quick and Clear Polymorphic Has Many Through Associations in Rails</h1>
+    
+    <p class="post-meta"><time datetime="2020-05-31T15:29:00-04:00" itemprop="datePublished">May 31, 2020</time> •
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/categories/programming/">programming</a>
+      
+    
+  
+
+
+ •
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/rails/">rails</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/ruby/">ruby</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/active-record/">active-record</a>
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+</p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>This weekend I spent <em>too long</em> trying to get the Internet to tell me how to
+set up a polymorphic <code class="highlighter-rouge">has_many :through</code> relationship in Rails. The official
+docs don’t go into this topic. It took me a bit to put the pieces together, so
+I’m sharing here for posterity.</p>
+
+<!-- more -->
+
+<p>This post uses Ruby 2.7.1, Rails 6.0.3.1, and PostgreSQL 12.2, but it should
+work fine with other databases, and I have no reason to expect that the
+solution described herein will become invalid any time soon.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>I’ll briefly describe my situation, so you can adapt it to your own.
+In my scenario, I began with three models that I had to associate:</p>
+
+<ul>
+  <li>An <code class="highlighter-rouge">Item</code> can be located at a <code class="highlighter-rouge">Place</code> or a <code class="highlighter-rouge">Person</code>.</li>
+  <li>A <code class="highlighter-rouge">Place</code> or <code class="highlighter-rouge">Person</code> can have a certain number of the same <code class="highlighter-rouge">Item</code>, which
+I decided to track through a <code class="highlighter-rouge">quantity</code> integer. This is what told me I
+needed a <code class="highlighter-rouge">has_many :through</code> – I needed a join table to track the <code class="highlighter-rouge">quantity</code>.</li>
+</ul>
+
+<p>You can easily substitute your own tables. Instead of <code class="highlighter-rouge">Item</code>, <code class="highlighter-rouge">Place</code>, and
+<code class="highlighter-rouge">Person</code>, you could use <code class="highlighter-rouge">Bill</code>, <code class="highlighter-rouge">Customer</code>, and <code class="highlighter-rouge">Supplier</code> (if a <code class="highlighter-rouge">Bill</code> could
+be owned by a <code class="highlighter-rouge">Customer</code> or <code class="highlighter-rouge">Supplier</code>).</p>
+
+<h2 id="process">Process</h2>
+
+<p>You don’t need to perform any migrations on your starting three tables. In my
+case, I had created <code class="highlighter-rouge">Item</code>, <code class="highlighter-rouge">Place</code>, and <code class="highlighter-rouge">Person</code> before realizing I needed
+a polymorphic <code class="highlighter-rouge">has_many :through</code>, and I could leave them as they were.</p>
+
+<p>I needed to create the join table. I decided to call the model <code class="highlighter-rouge">ItemStack</code>,
+which I generated like so:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/rails g model ItemStack quantity:integer item:references itemable:references
+</code></pre></div></div>
+
+<p>I opened the generated migration and changed it to look like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CreateItemStacks</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:item_stacks</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">integer</span> <span class="ss">:quantity</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">references</span> <span class="ss">:item</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">foreign_key: </span><span class="kp">true</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">references</span> <span class="ss">:itemable</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">polymorphic: </span><span class="kp">true</span>
+
+      <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>So there’s three things in there. In order:</p>
+
+<ol>
+  <li>The <code class="highlighter-rouge">quantity</code> integer (which made the <code class="highlighter-rouge">has_many :through</code> necessary). You
+might have a different attribute (or attributes). It’s whatever you want
+on your join table.</li>
+  <li>A reference to the <code class="highlighter-rouge">Items</code> table.</li>
+  <li>A reference for the polymorphic relationship. This is the part which,
+for me, links to either the <code class="highlighter-rouge">Places</code> table or the <code class="highlighter-rouge">Persons</code> table.
+I called my key <code class="highlighter-rouge">:itemable</code>, because a <code class="highlighter-rouge">Place</code> and a <code class="highlighter-rouge">Person</code> are both
+“itemable”, in that they both can have an <code class="highlighter-rouge">Item</code>. Not a real word, I know.
+I could have used <code class="highlighter-rouge">:holdable</code> or <code class="highlighter-rouge">:graspable</code> or <code class="highlighter-rouge">:haveable</code> or something,
+but I felt that <code class="highlighter-rouge">:itemable</code> was functionally clear. Again, you can call
+this whatever you want. If you had the models <code class="highlighter-rouge">Bill</code>, <code class="highlighter-rouge">Supplier</code>, and
+<code class="highlighter-rouge">Customer</code>, and both <code class="highlighter-rouge">Supplier</code> and <code class="highlighter-rouge">Customer</code> could have a <code class="highlighter-rouge">Bill</code>, you
+would probably use <code class="highlighter-rouge">:billable</code>.</li>
+</ol>
+
+<p>Run the migration and Rails will take care of setting up the rows you need
+for your polymorphic association:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/rails db:migrate
+</code></pre></div></div>
+
+<p>Along with the migration, you have to update your models. Here’s what mine
+needed:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Item</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:item_stacks</span>
+  <span class="n">has_many</span> <span class="ss">:persons</span><span class="p">,</span> <span class="ss">through: :item_stacks</span><span class="p">,</span> <span class="ss">source: :itemable</span><span class="p">,</span> <span class="ss">source_type: </span><span class="s2">"Person"</span>
+  <span class="n">has_many</span> <span class="ss">:places</span><span class="p">,</span> <span class="ss">through: :item_stacks</span><span class="p">,</span> <span class="ss">source: :itemable</span><span class="p">,</span> <span class="ss">source_type: </span><span class="s2">"Place"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Place</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:item_stacks</span><span class="p">,</span> <span class="ss">as: :itemable</span>
+  <span class="n">has_many</span> <span class="ss">:items</span><span class="p">,</span> <span class="ss">through: :item_stacks</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:item_stacks</span><span class="p">,</span> <span class="ss">as: :itemable</span>
+  <span class="n">has_many</span> <span class="ss">:items</span><span class="p">,</span> <span class="ss">through: :item_stacks</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ItemStack</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:item</span>
+  <span class="n">belongs_to</span> <span class="ss">:itemable</span><span class="p">,</span> <span class="ss">polymorphic: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Pretty straightforward, except for the <code class="highlighter-rouge">source</code> and <code class="highlighter-rouge">source_type</code> stuff.
+You absolutely need to specify those things, even though one might think
+Active Record would have enough information to get along without them. The
+<code class="highlighter-rouge">source_type</code> is the name of the related model class. That string is actually
+used in the database to identify which table the polymorphic foreign key is
+for.</p>
+
+<p>To better understand what I mean, check out an example record for an
+<code class="highlighter-rouge">ItemStack</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&lt;ItemStack id: 10, quantity: 11, item_id: 2, itemable_type: "Place", itemable_id: 2, created_at: "2020-05-31 18:18:53", updated_at: "2020-05-31 18:18:53"&gt;
+</code></pre></div></div>
+
+<p>… and the schema that was generated by my migration (comments added by me):</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">create_table</span> <span class="s2">"item_stacks"</span><span class="p">,</span> <span class="ss">force: :cascade</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">integer</span> <span class="s2">"quantity"</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">bigint</span> <span class="s2">"item_id"</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="s2">"itemable_type"</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span> <span class="c1"># &lt;- Needed for polymorphic</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">bigint</span> <span class="s2">"itemable_id"</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span>   <span class="c1"># &lt;- Needed for polymorphic</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="s2">"created_at"</span><span class="p">,</span> <span class="ss">precision: </span><span class="mi">6</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="s2">"updated_at"</span><span class="p">,</span> <span class="ss">precision: </span><span class="mi">6</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">index</span> <span class="p">[</span><span class="s2">"item_id"</span><span class="p">],</span> <span class="ss">name: </span><span class="s2">"index_item_stacks_on_item_id"</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">index</span> <span class="p">[</span><span class="s2">"itemable_type"</span><span class="p">,</span> <span class="s2">"itemable_id"</span><span class="p">],</span> <span class="ss">name: </span><span class="s2">"index_item_stacks_on_itemable_type_and_itemable_id"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="conclusion-and-bonus-content">Conclusion and Bonus Content</h2>
+
+<p>That’s all there is to it. Now I can do stuff like:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Find ItemStack for Item ID 2 at Place ID 2</span>
+<span class="no">ItemStack</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">item_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">itemable_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">itemable_type: </span><span class="s2">"Place"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Of course, you can write useful helper methods for your models to make
+things more concise, like:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># In app/models/item_stack.rb</span>
+<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">find_at_place</span><span class="p">(</span><span class="n">item_id</span><span class="p">,</span> <span class="n">place_id</span><span class="p">)</span>
+  <span class="n">find_by</span><span class="p">(</span><span class="ss">item_id: </span><span class="n">item_id</span><span class="p">,</span> <span class="ss">itemable_id: </span><span class="n">place_id</span><span class="p">,</span> <span class="ss">itemable_type: </span><span class="s2">"Place"</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>And maybe I want to add some validation to my <code class="highlighter-rouge">ItemStack</code>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># In app/models/item_stack.rb</span>
+<span class="n">validates</span> <span class="ss">:quantity</span><span class="p">,</span> <span class="ss">numericality: </span><span class="p">{</span> <span class="ss">greater_than_or_equal_to: </span><span class="mi">0</span><span class="p">,</span> <span class="ss">only_integer: </span><span class="kp">true</span> <span class="p">}</span>
+<span class="n">validates</span> <span class="ss">:itemable_id</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="n">validates</span> <span class="ss">:itemable_type</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+</code></pre></div></div>
+
+<p>And perhaps I’d like any <code class="highlighter-rouge">ItemStack</code> on a <code class="highlighter-rouge">Person</code> or <code class="highlighter-rouge">Place</code> to be
+destroyed if the <code class="highlighter-rouge">Person</code> or <code class="highlighter-rouge">Place</code> is destroyed, so I do this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># In app/models/person.rb or app/models/place.rb</span>
+<span class="c1"># I add `dependent: :destroy` to this `has_many` line I wrote earlier:</span>
+<span class="n">has_many</span> <span class="ss">:item_stacks</span><span class="p">,</span> <span class="ss">as: :itemable</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+</code></pre></div></div>
+
+<p>Once I got the hang of this stuff, it was pretty clear how things worked.
+Of course, this is still my first go at polymorphic <code class="highlighter-rouge">has_many :through</code>, and
+I’ll update this post if I discover I’ve made any mistakes. But this setup
+is working pretty well for me so far.</p>
+
+<h2 id="feedback">Feedback</h2>
+
+<p>Questions, comments, or tips for me? See a mistake in this post? <a href="mailto:hello@davidgay.org">Send me an
+email.</a></p>
+
+
+  </div>
+
+  
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <p>
+      
+
+&copy; David Gay - <a href="mailto:hello@davidgay.org">Email</a> me - Subscribe via <a href="https://davidgay.org/feed.xml">RSS</a>
+
+    </p>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

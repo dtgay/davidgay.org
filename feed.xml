@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-05-28T18:41:22-04:00</updated>
+  <updated>2020-05-31T19:33:46-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -24,6 +24,228 @@
     </author>
   
 
+  
+  
+    <entry>
+      
+      <title type="html">Quick and Clear Polymorphic Has Many Through Associations in Rails</title>
+      
+      
+      <link href="https://davidgay.org/programming/rails-polymorphic-has-many-through/" rel="alternate" type="text/html" title="Quick and Clear Polymorphic Has Many Through Associations in Rails" />
+      
+      <published>2020-05-31T15:29:00-04:00</published>
+      <updated>2020-05-31T15:29:00-04:00</updated>
+      <id>https://davidgay.org/programming/rails-polymorphic-has-many-through</id>
+      <content type="html" xml:base="https://davidgay.org/programming/rails-polymorphic-has-many-through/">&lt;p&gt;This weekend I spent &lt;em&gt;too long&lt;/em&gt; trying to get the Internet to tell me how to
+set up a polymorphic &lt;code class=&quot;highlighter-rouge&quot;&gt;has_many :through&lt;/code&gt; relationship in Rails. The official
+docs don’t go into this topic. It took me a bit to put the pieces together, so
+I’m sharing here for posterity.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;This post uses Ruby 2.7.1, Rails 6.0.3.1, and PostgreSQL 12.2, but it should
+work fine with other databases, and I have no reason to expect that the
+solution described herein will become invalid any time soon.&lt;/p&gt;
+
+&lt;h2 id=&quot;requirements&quot;&gt;Requirements&lt;/h2&gt;
+
+&lt;p&gt;I’ll briefly describe my situation, so you can adapt it to your own.
+In my scenario, I began with three models that I had to associate:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An &lt;code class=&quot;highlighter-rouge&quot;&gt;Item&lt;/code&gt; can be located at a &lt;code class=&quot;highlighter-rouge&quot;&gt;Place&lt;/code&gt; or a &lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;Place&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt; can have a certain number of the same &lt;code class=&quot;highlighter-rouge&quot;&gt;Item&lt;/code&gt;, which
+I decided to track through a &lt;code class=&quot;highlighter-rouge&quot;&gt;quantity&lt;/code&gt; integer. This is what told me I
+needed a &lt;code class=&quot;highlighter-rouge&quot;&gt;has_many :through&lt;/code&gt; – I needed a join table to track the &lt;code class=&quot;highlighter-rouge&quot;&gt;quantity&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can easily substitute your own tables. Instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;Item&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;Place&lt;/code&gt;, and
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt;, you could use &lt;code class=&quot;highlighter-rouge&quot;&gt;Bill&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;Customer&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;Supplier&lt;/code&gt; (if a &lt;code class=&quot;highlighter-rouge&quot;&gt;Bill&lt;/code&gt; could
+be owned by a &lt;code class=&quot;highlighter-rouge&quot;&gt;Customer&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Supplier&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h2 id=&quot;process&quot;&gt;Process&lt;/h2&gt;
+
+&lt;p&gt;You don’t need to perform any migrations on your starting three tables. In my
+case, I had created &lt;code class=&quot;highlighter-rouge&quot;&gt;Item&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;Place&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt; before realizing I needed
+a polymorphic &lt;code class=&quot;highlighter-rouge&quot;&gt;has_many :through&lt;/code&gt;, and I could leave them as they were.&lt;/p&gt;
+
+&lt;p&gt;I needed to create the join table. I decided to call the model &lt;code class=&quot;highlighter-rouge&quot;&gt;ItemStack&lt;/code&gt;,
+which I generated like so:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/rails g model ItemStack quantity:integer item:references itemable:references
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I opened the generated migration and changed it to look like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CreateItemStacks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Migration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;6.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;change&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create_table&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:item_stacks&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;integer&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:quantity&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;references&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;null: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;foreign_key: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;references&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:itemable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;null: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;polymorphic: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;timestamps&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So there’s three things in there. In order:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;quantity&lt;/code&gt; integer (which made the &lt;code class=&quot;highlighter-rouge&quot;&gt;has_many :through&lt;/code&gt; necessary). You
+might have a different attribute (or attributes). It’s whatever you want
+on your join table.&lt;/li&gt;
+  &lt;li&gt;A reference to the &lt;code class=&quot;highlighter-rouge&quot;&gt;Items&lt;/code&gt; table.&lt;/li&gt;
+  &lt;li&gt;A reference for the polymorphic relationship. This is the part which,
+for me, links to either the &lt;code class=&quot;highlighter-rouge&quot;&gt;Places&lt;/code&gt; table or the &lt;code class=&quot;highlighter-rouge&quot;&gt;Persons&lt;/code&gt; table.
+I called my key &lt;code class=&quot;highlighter-rouge&quot;&gt;:itemable&lt;/code&gt;, because a &lt;code class=&quot;highlighter-rouge&quot;&gt;Place&lt;/code&gt; and a &lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt; are both
+“itemable”, in that they both can have an &lt;code class=&quot;highlighter-rouge&quot;&gt;Item&lt;/code&gt;. Not a real word, I know.
+I could have used &lt;code class=&quot;highlighter-rouge&quot;&gt;:holdable&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;:graspable&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;:haveable&lt;/code&gt; or something,
+but I felt that &lt;code class=&quot;highlighter-rouge&quot;&gt;:itemable&lt;/code&gt; was functionally clear. Again, you can call
+this whatever you want. If you had the models &lt;code class=&quot;highlighter-rouge&quot;&gt;Bill&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;Supplier&lt;/code&gt;, and
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Customer&lt;/code&gt;, and both &lt;code class=&quot;highlighter-rouge&quot;&gt;Supplier&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Customer&lt;/code&gt; could have a &lt;code class=&quot;highlighter-rouge&quot;&gt;Bill&lt;/code&gt;, you
+would probably use &lt;code class=&quot;highlighter-rouge&quot;&gt;:billable&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Run the migration and Rails will take care of setting up the rows you need
+for your polymorphic association:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/rails db:migrate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Along with the migration, you have to update your models. Here’s what mine
+needed:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Item&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:item_stacks&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:persons&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;through: :item_stacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;source: :itemable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;source_type: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Person&quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:places&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;through: :item_stacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;source: :itemable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;source_type: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Place&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Place&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:item_stacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :itemable&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;through: :item_stacks&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:item_stacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :itemable&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;through: :item_stacks&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ItemStack&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:item&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:itemable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;polymorphic: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Pretty straightforward, except for the &lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;source_type&lt;/code&gt; stuff.
+You absolutely need to specify those things, even though one might think
+Active Record would have enough information to get along without them. The
+&lt;code class=&quot;highlighter-rouge&quot;&gt;source_type&lt;/code&gt; is the name of the related model class. That string is actually
+used in the database to identify which table the polymorphic foreign key is
+for.&lt;/p&gt;
+
+&lt;p&gt;To better understand what I mean, check out an example record for an
+&lt;code class=&quot;highlighter-rouge&quot;&gt;ItemStack&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#&amp;lt;ItemStack id: 10, quantity: 11, item_id: 2, itemable_type: &quot;Place&quot;, itemable_id: 2, created_at: &quot;2020-05-31 18:18:53&quot;, updated_at: &quot;2020-05-31 18:18:53&quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;… and the schema that was generated by my migration (comments added by me):&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;create_table&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;item_stacks&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;force: :cascade&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;integer&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;quantity&quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;bigint&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;item_id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;null: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;itemable_type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;null: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# &amp;lt;- Needed for polymorphic&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;bigint&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;itemable_id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;null: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# &amp;lt;- Needed for polymorphic&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;datetime&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;created_at&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;precision: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;null: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;datetime&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;updated_at&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;precision: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;null: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;item_id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;index_item_stacks_on_item_id&quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;itemable_type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;itemable_id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;index_item_stacks_on_itemable_type_and_itemable_id&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusion-and-bonus-content&quot;&gt;Conclusion and Bonus Content&lt;/h2&gt;
+
+&lt;p&gt;That’s all there is to it. Now I can do stuff like:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Find ItemStack for Item ID 2 at Place ID 2&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;ItemStack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find_by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;item_id: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;itemable_id: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;itemable_type: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Place&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Of course, you can write useful helper methods for your models to make
+things more concise, like:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# In app/models/item_stack.rb&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find_at_place&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;place_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;find_by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;item_id: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;itemable_id: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;place_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;itemable_type: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Place&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And maybe I want to add some validation to my &lt;code class=&quot;highlighter-rouge&quot;&gt;ItemStack&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# In app/models/item_stack.rb&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:quantity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;numericality: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;greater_than_or_equal_to: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;only_integer: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:itemable_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:itemable_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And perhaps I’d like any &lt;code class=&quot;highlighter-rouge&quot;&gt;ItemStack&lt;/code&gt; on a &lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Place&lt;/code&gt; to be
+destroyed if the &lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Place&lt;/code&gt; is destroyed, so I do this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# In app/models/person.rb or app/models/place.rb&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# I add `dependent: :destroy` to this `has_many` line I wrote earlier:&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:item_stacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :itemable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Once I got the hang of this stuff, it was pretty clear how things worked.
+Of course, this is still my first go at polymorphic &lt;code class=&quot;highlighter-rouge&quot;&gt;has_many :through&lt;/code&gt;, and
+I’ll update this post if I discover I’ve made any mistakes. But this setup
+is working pretty well for me so far.&lt;/p&gt;
+
+&lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;Questions, comments, or tips for me? See a mistake in this post? &lt;a href=&quot;mailto:hello@davidgay.org&quot;&gt;Send me an
+email.&lt;/a&gt;&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      
+        <author>
+            <name>David Gay</name>
+          
+          
+        </author>
+      
+
+      
+        <category term="programming" />
+      
+
+      
+        <category term="rails" />
+      
+        <category term="ruby" />
+      
+        <category term="active-record" />
+      
+
+      
+        <summary type="html">This weekend I spent too long trying to get the Internet to tell me how to set up a polymorphic has_many :through relationship in Rails. The official docs don’t go into this topic. It took me a bit to put the pieces together, so I’m sharing here for posterity.</summary>
+      
+
+      
+      
+    </entry>
+  
   
   
     <entry>
