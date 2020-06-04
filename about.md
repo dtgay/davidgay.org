@@ -20,13 +20,9 @@ Some stuff about me:
 
 ## Social
 
-- **[Dev.to](https://dev.to/davidgay)**
 - **[GitHub](https://github.com/dtgay)**
 - **[Goodreads](https://www.goodreads.com/davidgay)** - Newish and incomplete.
-- **[Hacker News](https://news.ycombinator.com/user?id=dtgay)** - Using this
-account now (I wanted a new username).
 - **[Letterboxd](https://letterboxd.com/davidgay/)** - New and incomplete.
-- **[Mastodon](https://ruby.social/@david)**
 - **[Product Hunt](https://www.producthunt.com/@davidgay)**
 - **[rym](https://rateyourmusic.com/~davidgay)** - _Brand_ new, very incomplete.
 - **[Stack Overflow](https://stackoverflow.com/users/1196465/david-gay?tab=profile)**
