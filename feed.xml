@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-06-07T15:05:35-04:00</updated>
+  <updated>2020-06-07T15:21:43-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -479,10 +479,10 @@ email.&lt;/a&gt;&lt;/p&gt;</content>
   
     <entry>
       
-      <title type="html">Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim</title>
+      <title type="html">Fast, Git-Backed, Markdown Notes in Vim with notational-fzf-vim</title>
       
       
-      <link href="https://davidgay.org/software/notational-fzf-vim/" rel="alternate" type="text/html" title="Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim" />
+      <link href="https://davidgay.org/software/notational-fzf-vim/" rel="alternate" type="text/html" title="Fast, Git-Backed, Markdown Notes in Vim with notational-fzf-vim" />
       
       <published>2020-05-25T14:11:00-04:00</published>
       <updated>2020-05-25T14:11:00-04:00</updated>
