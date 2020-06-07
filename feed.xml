@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-06-06T16:15:07-04:00</updated>
+  <updated>2020-06-07T15:05:35-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -24,6 +24,235 @@
     </author>
   
 
+  
+  
+    <entry>
+      
+      <title type="html">My Favorite Mac Apps After Two Years</title>
+      
+      
+      <link href="https://davidgay.org/software/favorite-mac-apps-after-two-years/" rel="alternate" type="text/html" title="My Favorite Mac Apps After Two Years" />
+      
+      <published>2020-06-07T10:50:00-04:00</published>
+      <updated>2020-06-07T10:50:00-04:00</updated>
+      <id>https://davidgay.org/software/favorite-mac-apps-after-two-years</id>
+      <content type="html" xml:base="https://davidgay.org/software/favorite-mac-apps-after-two-years/">&lt;p&gt;Around the beginning of 2018, I made the switch to using a MacBook for
+virtually everything I do. I had been a fan of the iPhone for some time and
+after a long history with Linux and Windows, I developed an interest in
+giving the Mac a try. Since then, I’ve been using a MacBook Pro pretty much
+exclusively.&lt;/p&gt;
+
+&lt;p&gt;Over two years later, here’s a list of the apps that made it onto my MacBook
+and stayed.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;In no particular order:&lt;/p&gt;
+
+&lt;h2 id=&quot;things&quot;&gt;&lt;a href=&quot;https://culturedcode.com/things/&quot;&gt;Things&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Okay, this one might actually be in particular order. &lt;a href=&quot;https://culturedcode.com/things/&quot;&gt;Things&lt;/a&gt; is possibly
+the nicest app I’ve used in my entire life. It has near-perfect synergy with
+how my brain works and it sparks joy every time I use it, which is constantly.
+Absolute beauty, keyboard shortcuts, a just-right organizational system, &lt;em&gt;start
+dates&lt;/em&gt; (oh, how many tasks managers don’t have &lt;em&gt;start dates!&lt;/em&gt;), a helper (for
+creating todos from anywhere on your system and automatically adding a link to
+the page, email, or whatever that you have open), and the list goes on.&lt;/p&gt;
+
+&lt;p&gt;Everything goes into Things. I add articles to read, questions to answer,
+things to check on, and minuscule reminders. If it comes to mind, I get it out
+of mind, and into Things.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other task managers I’ve tried:&lt;/strong&gt; Taskwarrior, Todoist, Apple Reminders,
+markdown checkbox lists&lt;/p&gt;
+
+&lt;h2 id=&quot;1password&quot;&gt;&lt;a href=&quot;https://1password.com/&quot;&gt;1Password&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://1password.com/&quot;&gt;1Password&lt;/a&gt; is another app that sparks joy. It’s quite pretty and both
+the Mac and iPhone apps quickly handle passwords, OTPs, credit card info,
+and other sensitive bits with minimal friction. Every other password manager
+I’ve tried feels noticeably worse and doesn’t work as well (or as often).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other password managers I’ve tried:&lt;/strong&gt; Dashlane, LastPass, pass, KeePass&lt;/p&gt;
+
+&lt;h2 id=&quot;iterm-2&quot;&gt;&lt;a href=&quot;https://www.iterm2.com/&quot;&gt;iTerm 2&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.iterm2.com/&quot;&gt;iTerm&lt;/a&gt;, you just have to use it. If you’re using the built-in Terminal.app,
+you’re missing out. That’s all there is to say. Install iTerm, get yourself
+a nice theme, and learn some shortcuts.&lt;/p&gt;
+
+&lt;p&gt;I used &lt;a href=&quot;https://en.wikipedia.org/wiki/Tmux&quot;&gt;Tmux&lt;/a&gt; with iTerm for a while since I was used to in on Linux. I
+eventually dropped it because iTerm can do all the things I used tmux for,
+plus OS-native window and tab management.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other terminal emulators I’ve tried:&lt;/strong&gt; Terminal.app, MobaXterm on Windows,
+and many of the Linux offerings&lt;/p&gt;
+
+&lt;h2 id=&quot;alfred&quot;&gt;&lt;a href=&quot;https://www.alfredapp.com/&quot;&gt;Alfred&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://www.alfredapp.com/&quot;&gt;Alfred&lt;/a&gt; Powerpack was a huge value purchase. For about $25 I got so
+much more than a supercharged launcher. Through built-in features and
+open-source “workflows” (extensions), I locate and manipulate files, access
+clipboard history, quickly enter snippets like my email address and the
+( ͡° ͜ʖ ͡°) face (my word, Lenny doesn’t look great in this font), grab contacts,
+look up and spell words, do calculations, access &lt;a href=&quot;https://1password.com/&quot;&gt;1Password&lt;/a&gt;, run commands
+in &lt;a href=&quot;https://www.iterm2.com/&quot;&gt;iTerm&lt;/a&gt;, open GitHub repos, search Stack Overflow/Exchange, control
+Spotify, search Smart Folders, and paste emojis.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other launchers I’ve tried:&lt;/strong&gt; Spotlight, and assorted Linux and Windows
+launchers that completely pale in comparison&lt;/p&gt;
+
+&lt;h2 id=&quot;backblaze&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Tmux&quot;&gt;Backblaze&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Tmux&quot;&gt;Backblaze&lt;/a&gt;, paired with Time Machine, is the core of my backup strategy.
+It’s fantastic software that backs up your entire machine with absolutely zero
+effort on your part. The best backup system is the one you actually use. And
+you’d have to actually &lt;em&gt;try&lt;/em&gt; to not run your backup with Backblaze. And
+because it backs up everything except the files you tell it not to, there’s
+super-low friction.&lt;/p&gt;
+
+&lt;p&gt;If you’re interested, &lt;a href=&quot;https://secure.backblaze.com/r/00opuv&quot;&gt;sign up with this link&lt;/a&gt; and we both get a free month.
+Otherwise, just use one of the links above.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other backup systems I’ve tried:&lt;/strong&gt; I rolled my own backups on Linux and
+Windows.&lt;/p&gt;
+
+&lt;h2 id=&quot;tripmode&quot;&gt;&lt;a href=&quot;https://www.tripmode.ch/&quot;&gt;TripMode&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.tripmode.ch/&quot;&gt;TripMode&lt;/a&gt; is &lt;em&gt;so nice&lt;/em&gt; for absolutely any travel or public wifi use. You
+can easily control which programs have access to the network, and how much data
+you want to go through. I use it every time I’m working from somewhere other
+than my house or office.&lt;/p&gt;
+
+&lt;h2 id=&quot;calibre&quot;&gt;&lt;a href=&quot;https://secure.backblaze.com/r/00opuv&quot;&gt;Calibre&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;It looks a bit dated (and it is), but &lt;a href=&quot;https://secure.backblaze.com/r/00opuv&quot;&gt;Calibre&lt;/a&gt; is a good way to manage
+your eBook and PDF library. I mainly use it for converting files between PDF,
+EPUB, and MOBI formats, which it does to my satisfaction. Apple Books looks
+more modern, but Calibre beats it in usefulness.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other eBook managers I’ve tried:&lt;/strong&gt; Apple Books&lt;/p&gt;
+
+&lt;h2 id=&quot;dozer&quot;&gt;&lt;a href=&quot;https://github.com/Mortennn/Dozer&quot;&gt;Dozer&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/Mortennn/Dozer&quot;&gt;Dozer&lt;/a&gt; is a free and open-source alternative to Bartender. It tidies up
+your menu bar by hiding the icons you don’t want to see. I use Dozer to hide
+everything but wifi, battery, and the time.&lt;/p&gt;
+
+&lt;h2 id=&quot;eqmac&quot;&gt;&lt;a href=&quot;https://eqmac.app/&quot;&gt;eqMac&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;MacOS doesn’t have a built-in equalizer, and sometimes I like to use one,
+especially when playing music on speakers. &lt;a href=&quot;https://eqmac.app/&quot;&gt;eqMac&lt;/a&gt; is open-source and
+does what it says on the can.&lt;/p&gt;
+
+&lt;h2 id=&quot;firefox&quot;&gt;&lt;a href=&quot;https://www.mozilla.org/firefox&quot;&gt;Firefox&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;I tried Safari for a while, but I’m a &lt;a href=&quot;https://www.mozilla.org/firefox&quot;&gt;Firefox&lt;/a&gt; guy at heart. What can I
+say. I love the concern for privacy, and Sync is great.&lt;/p&gt;
+
+&lt;h2 id=&quot;grandperspective&quot;&gt;&lt;a href=&quot;http://grandperspectiv.sourceforge.net/&quot;&gt;GrandPerspective&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;I know there are sexier disk usage analyzers out there, but
+&lt;a href=&quot;http://grandperspectiv.sourceforge.net/&quot;&gt;GrandPerspective&lt;/a&gt; is free, and it gets the job done. Sourceforge
+throwback.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other disk usage analyzers I’ve tried:&lt;/strong&gt; WinDirStat on Windows&lt;/p&gt;
+
+&lt;h2 id=&quot;insomnia&quot;&gt;&lt;a href=&quot;https://insomnia.rest/&quot;&gt;Insomnia&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://insomnia.rest/&quot;&gt;Insomnia&lt;/a&gt; is both sexier and faster than Postman, and most developers
+need a good REST client.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other REST clients I’ve tried:&lt;/strong&gt; Postman&lt;/p&gt;
+
+&lt;h2 id=&quot;karabiner-elements&quot;&gt;&lt;a href=&quot;https://karabiner-elements.pqrs.org/&quot;&gt;Karabiner-Elements&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Most of the time I’m using my customized &lt;a href=&quot;https://mechanicalkeyboards.com/shop/index.php?l=product_list&amp;amp;c=165&quot;&gt;Vortex Pok3r&lt;/a&gt;, but when I’m on
+the built-in keyboard, I have to make some changes. Most importantly,
+&lt;a href=&quot;https://karabiner-elements.pqrs.org/&quot;&gt;Karabiner-Elements&lt;/a&gt; lets me map &lt;code class=&quot;highlighter-rouge&quot;&gt;caps lock&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;h&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;j&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;k&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;l&lt;/code&gt; to arrow
+keys. Critical stuff.&lt;/p&gt;
+
+&lt;h2 id=&quot;amphetamine&quot;&gt;&lt;a href=&quot;https://apps.apple.com/us/app/amphetamine/id937984704?mt=12&quot;&gt;Amphetamine&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Sometimes you don’t want your computer to go to sleep. Unfortunately, macOS
+needs a little extra help with that. &lt;a href=&quot;https://apps.apple.com/us/app/amphetamine/id937984704?mt=12&quot;&gt;Amphetamine&lt;/a&gt; is free and does the
+job.&lt;/p&gt;
+
+&lt;h2 id=&quot;spotify&quot;&gt;&lt;a href=&quot;https://www.spotify.com/&quot;&gt;Spotify&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;The music might not be lossless (Dear Spotify: I’d pay extra!), but
+&lt;a href=&quot;https://www.spotify.com/&quot;&gt;Spotify&lt;/a&gt; has reasonable audio quality, and the selection and convenience
+is hard to argue with.&lt;/p&gt;
+
+&lt;h2 id=&quot;vlc&quot;&gt;&lt;a href=&quot;https://www.videolan.org/vlc/index.html&quot;&gt;VLC&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Sometimes, Mac’s built-in options don’t cut it for media playback, so I use
+the tried and true &lt;a href=&quot;https://www.videolan.org/vlc/index.html&quot;&gt;VLC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;vimr&quot;&gt;&lt;a href=&quot;https://github.com/qvacua/vimr&quot;&gt;VimR&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/qvacua/vimr&quot;&gt;VimR&lt;/a&gt; is one for you (Neo)vim fans out there. Sometimes I want to quickly
+open and tweak text files from Finder, and &lt;a href=&quot;https://github.com/qvacua/vimr&quot;&gt;VimR&lt;/a&gt; handles that nicely,
+allowing me to use Vim and my &lt;code class=&quot;highlighter-rouge&quot;&gt;.vimrc&lt;/code&gt; along the way.&lt;/p&gt;
+
+&lt;h2 id=&quot;xnip&quot;&gt;&lt;a href=&quot;https://xnipapp.com/&quot;&gt;Xnip&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://xnipapp.com/&quot;&gt;Xnip&lt;/a&gt; is the nicest screenshotting tool I’ve tried. It’s smooth, has
+plenty of free features, and Just Works™️.&lt;/p&gt;
+
+&lt;h2 id=&quot;slack&quot;&gt;&lt;a href=&quot;https://slack.com/&quot;&gt;Slack&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Everyone and their grandmother uses &lt;a href=&quot;https://slack.com/&quot;&gt;Slack&lt;/a&gt; now, so that means I do, too.
+It’s alright, though I wish it was native and not Electron.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Other messaging tools I’ve used:&lt;/strong&gt; IRC (Remember IRC? It’s still around.
+We could go back; it’s not too late. Anyone?)&lt;/p&gt;
+
+&lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;Questions, comments, or tips for me? See a mistake in this post? &lt;a href=&quot;mailto:hello@davidgay.org&quot;&gt;Send me an
+email.&lt;/a&gt;&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      
+        <author>
+            <name>David Gay</name>
+          
+          
+        </author>
+      
+
+      
+        <category term="software" />
+      
+
+      
+        <category term="mac" />
+      
+        <category term="apple" />
+      
+        <category term="apps" />
+      
+        <category term="tools" />
+      
+        <category term="favorites" />
+      
+        <category term="list" />
+      
+
+      
+        <summary type="html">Around the beginning of 2018, I made the switch to using a MacBook for virtually everything I do. I had been a fan of the iPhone for some time and after a long history with Linux and Windows, I developed an interest in giving the Mac a try. Since then, I’ve been using a MacBook Pro pretty much exclusively. Over two years later, here’s a list of the apps that made it onto my MacBook and stayed.</summary>
+      
+
+      
+      
+    </entry>
+  
   
   
     <entry>
