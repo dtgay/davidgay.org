@@ -6,7 +6,7 @@ date: 2020-05-25 18:11:00
 description: >-
   I've tried vimwiki, OneNote, Bear, Gollum, Notion, you name it. Today I'm
   going to share the system I'm using now, and what my requirements were.
-title: Fast, Git-backed, Markdown notes in Vim with notational-fzf-vim
+title: Fast, Git-Backed, Markdown Notes in Vim with notational-fzf-vim
 ---
 
 Like many developers, I like to take notes during the day. And like many
