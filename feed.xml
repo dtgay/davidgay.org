@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-06-17T17:20:00-04:00</updated>
+  <updated>2020-06-17T17:23:36-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -40,9 +40,9 @@
 your Rails 6 API. Currently, the whole knock &lt;a href=&quot;https://github.com/nsarno/knock/pull/248&quot;&gt;situation&lt;/a&gt; is a &lt;a href=&quot;https://github.com/nsarno/knock/issues/250&quot;&gt;bit&lt;/a&gt;
 jacked &lt;a href=&quot;https://github.com/nsarno/knock/issues/249&quot;&gt;up&lt;/a&gt;. From what I can tell, a new maintainer took over (thank you!)
 and is trying to get a solid release out the door, the first in three years.
-Unfortunately, the existing docs and blog posts available on knock are often
-unclear and outdated. But I figured out how to get things working in Rails 6,
-and now you can, too.&lt;/p&gt;
+Unfortunately, the existing docs and blog posts available on knock are
+sometimes unclear or outdated. But I figured out how to get things working in
+Rails 6, and now you can, too.&lt;/p&gt;
 
 &lt;!-- more --&gt;
 
@@ -265,7 +265,7 @@ email.&lt;/a&gt;&lt;/p&gt;</content>
       
 
       
-        <summary type="html">This post explains how to set up and use the knock gem for JWT auth in your Rails 6 API. Currently, the whole knock situation is a bit jacked up. From what I can tell, a new maintainer took over (thank you!) and is trying to get a solid release out the door, the first in three years. Unfortunately, the existing docs and blog posts available on knock are often unclear and outdated. But I figured out how to get things working in Rails 6, and now you can, too.</summary>
+        <summary type="html">This post explains how to set up and use the knock gem for JWT auth in your Rails 6 API. Currently, the whole knock situation is a bit jacked up. From what I can tell, a new maintainer took over (thank you!) and is trying to get a solid release out the door, the first in three years. Unfortunately, the existing docs and blog posts available on knock are sometimes unclear or outdated. But I figured out how to get things working in Rails 6, and now you can, too.</summary>
       
 
       
