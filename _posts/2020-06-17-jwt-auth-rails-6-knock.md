@@ -10,7 +10,7 @@ title: JWT Auth in Rails 6 with Knock
 
 This post explains how to set up and use the [knock gem][1] for JWT auth in
 your Rails 6 API. Currently, the whole knock [situation][2] is a [bit][3]
-jacked [up][4]. From what I can tell, a new maintainer took over (thank you!)
+[confusing][4]. From what I can tell, a new maintainer took over (thank you!)
 and is trying to get a solid release out the door, the first in three years.
 Unfortunately, the existing docs and blog posts available on knock are
 sometimes unclear or outdated. But I figured out how to get things working in
