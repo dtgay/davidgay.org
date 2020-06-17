@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  
+  
+  <title>JWT Auth in Rails 6 with Knock | David Gay</title>
+  <meta name="description" content="How to set up and use the knock gem to add JWT auth to your Rails 6 API.">
+  
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://davidgay.org/software/jwt-auth-rails-6-knock/">
+  <link rel="shortcut icon" type="image/png" href="/favicon.png">
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="David Gay" href="https://davidgay.org/feed.xml">
+
+  
+
+  
+  <meta property="og:title" content="JWT Auth in Rails 6 with Knock">
+  <meta property="og:site_name" content="David Gay">
+  <meta property="og:url" content="https://davidgay.org/software/jwt-auth-rails-6-knock/">
+  <meta property="og:description" content="How to set up and use the knock gem to add JWT auth to your Rails 6 API.">
+  
+  
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:title" content="JWT Auth in Rails 6 with Knock">
+  <meta name="twitter:description" content="How to set up and use the knock gem to add JWT auth to your Rails 6 API.">
+  
+  
+
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700&display=swap" rel="stylesheet">
+
+  
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">David Gay</a>
+
+    <nav class="site-nav">
+      
+        
+        <a class="page-link" href="/about/">About</a>
+      
+        
+        <a class="page-link" href="/archives/">Archives</a>
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    
+      <h1 class="post-title" itemprop="name headline">JWT Auth in Rails 6 with Knock</h1>
+    
+    <p class="post-meta"><time datetime="2020-06-17T13:15:00-04:00" itemprop="datePublished">Jun 17, 2020</time> •
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/categories/software/">software</a>
+      
+    
+      
+    
+  
+
+
+ •
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/ruby/">ruby</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/rails/">rails</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/jwt/">jwt</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/auth/">auth</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/knock/">knock</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/gem/">gem</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/token/">token</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/api/">api</a>
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+</p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>This post explains how to set up and use the <a href="https://github.com/nsarno/knock">knock gem</a> for JWT auth in
+your Rails 6 API. Currently, the whole knock <a href="https://github.com/nsarno/knock/pull/248">situation</a> is a <a href="https://github.com/nsarno/knock/issues/250">bit</a>
+jacked <a href="https://github.com/nsarno/knock/issues/249">up</a>. From what I can tell, a new maintainer took over (thank you!)
+and is trying to get a solid release out the door, the first in three years.
+Unfortunately, the existing docs and blog posts available on knock are often
+unclear and outdated. But I figured out how to get things working in Rails 6,
+and now you can, too.</p>
+
+<!-- more -->
+
+<h2 id="installation">Installation</h2>
+
+<p>At the time of this writing, the new release, 2.2, hasn’t been pushed out to
+RubyGems. So what you want to do is utilize the <a href="https://github.com/nsarno/knock/pull/248">unofficial 2.2 release</a>
+by adding <code class="highlighter-rouge">knock</code> to your <code class="highlighter-rouge">Gemfile</code> in this way:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Add JWT authentication</span>
+<span class="c1"># Need to use this specific commit, which is unofficially the 2.2 release,</span>
+<span class="c1">#   because the new version hasn't been released to RubyGems yet.</span>
+<span class="n">gem</span> <span class="s2">"knock"</span><span class="p">,</span> <span class="ss">github: </span><span class="s2">"nsarno/knock"</span><span class="p">,</span> <span class="ss">branch: </span><span class="s2">"master"</span><span class="p">,</span>
+    <span class="ss">ref: </span><span class="s2">"9214cd027422df8dc31eb67c60032fbbf8fc100b"</span>
+</code></pre></div></div>
+
+<p>Once you’ve added that, go ahead and install:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle <span class="nb">install</span>
+</code></pre></div></div>
+
+<h2 id="the-model">The Model</h2>
+
+<p>Presumably, you have a <code class="highlighter-rouge">User</code> model for use with auth. For this part, <a href="https://github.com/nsarno/knock/blob/master/README.md">the
+official docs</a> are solid and I recommend following them. I believe the docs
+also have some info on what to do if your model is namespaced, or maybe even
+named differently, though I haven’t tried any of that stuff out.</p>
+
+<p>The main requirement is that you either use <code class="highlighter-rouge">has_secure_password</code> in your
+<code class="highlighter-rouge">User</code> model, or, alternatively, implement an <code class="highlighter-rouge">authenticate</code> method that does
+the same sort of thing that the <code class="highlighter-rouge">authenticate</code> method added by
+<code class="highlighter-rouge">has_secure_password</code> does (see <a href="https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password">the docs for that method</a>). For most
+people, adding <code class="highlighter-rouge">has_secure_password</code> like this will be all you need:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_secure_password</span>
+  <span class="c1"># Other stuff can be in this class, of course</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>For my purposes, I had to implement my own <code class="highlighter-rouge">authenticate</code> method and my own
+<code class="highlighter-rouge">self.from_token_request</code> as mentioned in <a href="https://github.com/nsarno/knock/blob/master/README.md">the official docs</a>, because I
+have an unusual situation where my API actually authenticates with <em>another</em>
+API for its login process. But since that’s unusual, I’ll explain that in
+a forthcoming blog post, rather than at this moment. I’ll update this post with
+a link to that post when I write it. If you need help now, <a href="mailto:hello@davidgay.org">email me</a>.</p>
+
+<h2 id="the-controllers">The Controllers</h2>
+
+<p>You need to create a controller for knock. Please note that if you have
+any issues, try naming your controllers and routes exactly like mine.</p>
+
+<p>In <code class="highlighter-rouge">controllers/</code>, create a <code class="highlighter-rouge">user_token_controller.rb</code> file with these
+contents:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">UserTokenController</span> <span class="o">&lt;</span> <span class="no">Knock</span><span class="o">::</span><span class="no">AuthTokenController</span>
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">auth_params</span>
+    <span class="c1"># Without overriding the auth_params here, you get "unpermitted</span>
+    <span class="c1">#   parameter" errors for username. The call seems to work anyway,</span>
+    <span class="c1">#   but this eliminates the error message from your logs.</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:auth</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:username</span><span class="p">,</span> <span class="ss">:password</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>My app is namespaced, so my full controller actually looks like <em>this</em>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Api</span>
+  <span class="k">module</span> <span class="nn">V1</span>
+    <span class="k">class</span> <span class="nc">UserTokenController</span> <span class="o">&lt;</span> <span class="no">Knock</span><span class="o">::</span><span class="no">AuthTokenController</span>
+      <span class="kp">private</span>
+      <span class="k">def</span> <span class="nf">auth_params</span>
+        <span class="c1"># Without overriding the auth_params here, you get "unpermitted</span>
+        <span class="c1">#   parameter" errors for username. The call seems to work anyway,</span>
+        <span class="c1">#   but this eliminates the error message from your logs.</span>
+        <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:auth</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:username</span><span class="p">,</span> <span class="ss">:password</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>In that <code class="highlighter-rouge">permit(...)</code>, you should permit params you need for your
+authentication process. Mine just takes a username and password.</p>
+
+<p>You’ll notice that this controller looks basically empty, and that’s because
+it is. The <code class="highlighter-rouge">Knock::AuthTokenController</code> that it inherits from provides
+everything you need.</p>
+
+<p>Second, at the top of your <code class="highlighter-rouge">ApplicationController</code> in
+<code class="highlighter-rouge">controllers/application_controller.rb</code>, add these lines:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kp">include</span> <span class="no">Knock</span><span class="o">::</span><span class="no">Authenticable</span>
+<span class="n">before_action</span> <span class="ss">:authenticate_user</span> <span class="c1"># Optional, see below</span>
+</code></pre></div></div>
+
+<p>That first line is required. The second line is optional. When you add it to
+<code class="highlighter-rouge">ApplicationController</code>, it blocks access to all of your controllers for
+any request that doesn’t include a valid JWT token in its header – except
+for the <code class="highlighter-rouge">UserTokenController</code>. The <code class="highlighter-rouge">UserTokenController</code> inherits from
+<code class="highlighter-rouge">Knock::AuthTokenController</code>, so it can be accessed without a JWT token for
+the purpose of actually <em>getting</em> the JWT token. It looks like knock is
+smart enough to take care of that for you; you don’t have to add any special
+rules to <code class="highlighter-rouge">UserTokenController</code> to allow this special access for authentication.</p>
+
+<h2 id="the-route">The Route</h2>
+
+<p>Add a route in <code class="highlighter-rouge">config/routes.rb</code> that looks like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">post</span> <span class="s2">"/auth"</span><span class="p">,</span> <span class="ss">to: </span><span class="s2">"user_token#create"</span>
+</code></pre></div></div>
+
+<p>I confirmed that the first part, <code class="highlighter-rouge">"/auth"</code>, can be whatever you want.
+<code class="highlighter-rouge">"/login"</code>, <code class="highlighter-rouge">"/user_token</code>, whatever. The second part is required though –
+you need to point to that <code class="highlighter-rouge">create</code> action. You didn’t have to write a <code class="highlighter-rouge">create</code>
+action yourself, because it’s automagically provided by
+<code class="highlighter-rouge">Knock::AuthTokenController</code>.</p>
+
+<h2 id="give-it-a-go">Give It a Go</h2>
+
+<p>At this point, you should restart your Rails app. Then use a REST client
+to see if things are working.</p>
+
+<p>A <code class="highlighter-rouge">POST</code> request to your route (my path is <code class="highlighter-rouge">http://localhost:3000/api/v1/auth</code>)
+might look like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"auth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demouser"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testingpassword123"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>From what I can tell, that <code class="highlighter-rouge">auth</code> object is necessary, something knock looks
+for. I didn’t define it anywhere; knock just expects your params to be wrapped
+in it.</p>
+
+<p>Don’t forget to include a header with <code class="highlighter-rouge">Content-Type</code> set to <code class="highlighter-rouge">application/json</code>.</p>
+
+<p>You should get back something like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"jwt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTI1MDc4MjcsInN1YiI6NH0.0gTKH4rmDFvI-mZmHIB52CooUDIEYZjQ1aLnX0DVT6w"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Add that as a <code class="highlighter-rouge">Bearer</code> token to the auth header of further requests, and you
+should be all set. Without this token, your requests should return a <code class="highlighter-rouge">401
+Unauthorized</code>.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<p>If you’re having any troubles with this post whatsoever, first try naming
+your things exactly how I name mine. Everything. I’m not sure – since I
+just figured this stuff out – but I think some things might need to be named
+in a certain way, at least by default.</p>
+
+<p>If that doesn’t help, try adding a file, <code class="highlighter-rouge">config/initializers/knock.rb</code>,
+with these contents:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Knock</span><span class="p">.</span><span class="nf">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This initializer can be given a few different options, as detailed in <a href="https://github.com/nsarno/knock/blob/master/README.md">the
+docs</a>. You may need to add some of those.</p>
+
+<p>I don’t use any options, and so my initializer is empty. And I just tested
+deleting the <code class="highlighter-rouge">knock.rb</code> inititalizer file entirely, and my app seems to run
+fine without it, so it doesn’t seem that the file is required if you don’t need
+to configure anything.</p>
+
+<p>Figuring this stuff out today was a bit of a drag, and I know there are other
+people out there who are frustrated, going through the same thing. Knock is
+great but it’s in a bit of a weird place right now. Don’t hesitate to
+<a href="mailto:hello@davidgay.org">email me</a> with any questions you have, and I’ll try to point you in the
+right direction.</p>
+
+<h2 id="feedback">Feedback</h2>
+
+<p>Questions, comments, or tips for me? See a mistake in this post? <a href="mailto:hello@davidgay.org">Send me an
+email.</a></p>
+
+
+  </div>
+
+  
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <p>
+      
+
+&copy; David Gay - <a href="mailto:hello@davidgay.org">Email</a> me - <a href="https://www.buymeacoffee.com/davidgay">Buy me a tea</a> - Subscribe via <a href="https://davidgay.org/feed.xml">RSS</a>
+<script data-goatcounter="https://davidgay.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+    </p>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

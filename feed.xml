@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-06-07T15:21:43-04:00</updated>
+  <updated>2020-06-17T17:20:00-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -24,6 +24,254 @@
     </author>
   
 
+  
+  
+    <entry>
+      
+      <title type="html">JWT Auth in Rails 6 with Knock</title>
+      
+      
+      <link href="https://davidgay.org/software/jwt-auth-rails-6-knock/" rel="alternate" type="text/html" title="JWT Auth in Rails 6 with Knock" />
+      
+      <published>2020-06-17T13:15:00-04:00</published>
+      <updated>2020-06-17T13:15:00-04:00</updated>
+      <id>https://davidgay.org/software/jwt-auth-rails-6-knock</id>
+      <content type="html" xml:base="https://davidgay.org/software/jwt-auth-rails-6-knock/">&lt;p&gt;This post explains how to set up and use the &lt;a href=&quot;https://github.com/nsarno/knock&quot;&gt;knock gem&lt;/a&gt; for JWT auth in
+your Rails 6 API. Currently, the whole knock &lt;a href=&quot;https://github.com/nsarno/knock/pull/248&quot;&gt;situation&lt;/a&gt; is a &lt;a href=&quot;https://github.com/nsarno/knock/issues/250&quot;&gt;bit&lt;/a&gt;
+jacked &lt;a href=&quot;https://github.com/nsarno/knock/issues/249&quot;&gt;up&lt;/a&gt;. From what I can tell, a new maintainer took over (thank you!)
+and is trying to get a solid release out the door, the first in three years.
+Unfortunately, the existing docs and blog posts available on knock are often
+unclear and outdated. But I figured out how to get things working in Rails 6,
+and now you can, too.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;At the time of this writing, the new release, 2.2, hasn’t been pushed out to
+RubyGems. So what you want to do is utilize the &lt;a href=&quot;https://github.com/nsarno/knock/pull/248&quot;&gt;unofficial 2.2 release&lt;/a&gt;
+by adding &lt;code class=&quot;highlighter-rouge&quot;&gt;knock&lt;/code&gt; to your &lt;code class=&quot;highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt; in this way:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Add JWT authentication&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Need to use this specific commit, which is unofficially the 2.2 release,&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   because the new version hasn't been released to RubyGems yet.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;knock&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;github: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;nsarno/knock&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;branch: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;master&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;ref: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;9214cd027422df8dc31eb67c60032fbbf8fc100b&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Once you’ve added that, go ahead and install:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;the-model&quot;&gt;The Model&lt;/h2&gt;
+
+&lt;p&gt;Presumably, you have a &lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt; model for use with auth. For this part, &lt;a href=&quot;https://github.com/nsarno/knock/blob/master/README.md&quot;&gt;the
+official docs&lt;/a&gt; are solid and I recommend following them. I believe the docs
+also have some info on what to do if your model is namespaced, or maybe even
+named differently, though I haven’t tried any of that stuff out.&lt;/p&gt;
+
+&lt;p&gt;The main requirement is that you either use &lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_password&lt;/code&gt; in your
+&lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt; model, or, alternatively, implement an &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate&lt;/code&gt; method that does
+the same sort of thing that the &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate&lt;/code&gt; method added by
+&lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_password&lt;/code&gt; does (see &lt;a href=&quot;https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password&quot;&gt;the docs for that method&lt;/a&gt;). For most
+people, adding &lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_password&lt;/code&gt; like this will be all you need:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_secure_password&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Other stuff can be in this class, of course&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For my purposes, I had to implement my own &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate&lt;/code&gt; method and my own
+&lt;code class=&quot;highlighter-rouge&quot;&gt;self.from_token_request&lt;/code&gt; as mentioned in &lt;a href=&quot;https://github.com/nsarno/knock/blob/master/README.md&quot;&gt;the official docs&lt;/a&gt;, because I
+have an unusual situation where my API actually authenticates with &lt;em&gt;another&lt;/em&gt;
+API for its login process. But since that’s unusual, I’ll explain that in
+a forthcoming blog post, rather than at this moment. I’ll update this post with
+a link to that post when I write it. If you need help now, &lt;a href=&quot;mailto:hello@davidgay.org&quot;&gt;email me&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-controllers&quot;&gt;The Controllers&lt;/h2&gt;
+
+&lt;p&gt;You need to create a controller for knock. Please note that if you have
+any issues, try naming your controllers and routes exactly like mine.&lt;/p&gt;
+
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;controllers/&lt;/code&gt;, create a &lt;code class=&quot;highlighter-rouge&quot;&gt;user_token_controller.rb&lt;/code&gt; file with these
+contents:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserTokenController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AuthTokenController&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;auth_params&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Without overriding the auth_params here, you get &quot;unpermitted&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;#   parameter&quot; errors for username. The call seems to work anyway,&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;#   but this eliminates the error message from your logs.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:auth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;My app is namespaced, so my full controller actually looks like &lt;em&gt;this&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Api&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;V1&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserTokenController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AuthTokenController&lt;/span&gt;
+      &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;auth_params&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# Without overriding the auth_params here, you get &quot;unpermitted&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;#   parameter&quot; errors for username. The call seems to work anyway,&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;#   but this eliminates the error message from your logs.&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:auth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In that &lt;code class=&quot;highlighter-rouge&quot;&gt;permit(...)&lt;/code&gt;, you should permit params you need for your
+authentication process. Mine just takes a username and password.&lt;/p&gt;
+
+&lt;p&gt;You’ll notice that this controller looks basically empty, and that’s because
+it is. The &lt;code class=&quot;highlighter-rouge&quot;&gt;Knock::AuthTokenController&lt;/code&gt; that it inherits from provides
+everything you need.&lt;/p&gt;
+
+&lt;p&gt;Second, at the top of your &lt;code class=&quot;highlighter-rouge&quot;&gt;ApplicationController&lt;/code&gt; in
+&lt;code class=&quot;highlighter-rouge&quot;&gt;controllers/application_controller.rb&lt;/code&gt;, add these lines:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Authenticable&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;before_action&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:authenticate_user&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Optional, see below&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That first line is required. The second line is optional. When you add it to
+&lt;code class=&quot;highlighter-rouge&quot;&gt;ApplicationController&lt;/code&gt;, it blocks access to all of your controllers for
+any request that doesn’t include a valid JWT token in its header – except
+for the &lt;code class=&quot;highlighter-rouge&quot;&gt;UserTokenController&lt;/code&gt;. The &lt;code class=&quot;highlighter-rouge&quot;&gt;UserTokenController&lt;/code&gt; inherits from
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Knock::AuthTokenController&lt;/code&gt;, so it can be accessed without a JWT token for
+the purpose of actually &lt;em&gt;getting&lt;/em&gt; the JWT token. It looks like knock is
+smart enough to take care of that for you; you don’t have to add any special
+rules to &lt;code class=&quot;highlighter-rouge&quot;&gt;UserTokenController&lt;/code&gt; to allow this special access for authentication.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-route&quot;&gt;The Route&lt;/h2&gt;
+
+&lt;p&gt;Add a route in &lt;code class=&quot;highlighter-rouge&quot;&gt;config/routes.rb&lt;/code&gt; that looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/auth&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;to: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;user_token#create&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I confirmed that the first part, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;/auth&quot;&lt;/code&gt;, can be whatever you want.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;/login&quot;&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;/user_token&lt;/code&gt;, whatever. The second part is required though –
+you need to point to that &lt;code class=&quot;highlighter-rouge&quot;&gt;create&lt;/code&gt; action. You didn’t have to write a &lt;code class=&quot;highlighter-rouge&quot;&gt;create&lt;/code&gt;
+action yourself, because it’s automagically provided by
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Knock::AuthTokenController&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;give-it-a-go&quot;&gt;Give It a Go&lt;/h2&gt;
+
+&lt;p&gt;At this point, you should restart your Rails app. Then use a REST client
+to see if things are working.&lt;/p&gt;
+
+&lt;p&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; request to your route (my path is &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:3000/api/v1/auth&lt;/code&gt;)
+might look like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;auth&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;username&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;demouser&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;testingpassword123&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;From what I can tell, that &lt;code class=&quot;highlighter-rouge&quot;&gt;auth&lt;/code&gt; object is necessary, something knock looks
+for. I didn’t define it anywhere; knock just expects your params to be wrapped
+in it.&lt;/p&gt;
+
+&lt;p&gt;Don’t forget to include a header with &lt;code class=&quot;highlighter-rouge&quot;&gt;Content-Type&lt;/code&gt; set to &lt;code class=&quot;highlighter-rouge&quot;&gt;application/json&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;You should get back something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;jwt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTI1MDc4MjcsInN1YiI6NH0.0gTKH4rmDFvI-mZmHIB52CooUDIEYZjQ1aLnX0DVT6w&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Add that as a &lt;code class=&quot;highlighter-rouge&quot;&gt;Bearer&lt;/code&gt; token to the auth header of further requests, and you
+should be all set. Without this token, your requests should return a &lt;code class=&quot;highlighter-rouge&quot;&gt;401
+Unauthorized&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
+
+&lt;p&gt;If you’re having any troubles with this post whatsoever, first try naming
+your things exactly how I name mine. Everything. I’m not sure – since I
+just figured this stuff out – but I think some things might need to be named
+in a certain way, at least by default.&lt;/p&gt;
+
+&lt;p&gt;If that doesn’t help, try adding a file, &lt;code class=&quot;highlighter-rouge&quot;&gt;config/initializers/knock.rb&lt;/code&gt;,
+with these contents:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This initializer can be given a few different options, as detailed in &lt;a href=&quot;https://github.com/nsarno/knock/blob/master/README.md&quot;&gt;the
+docs&lt;/a&gt;. You may need to add some of those.&lt;/p&gt;
+
+&lt;p&gt;I don’t use any options, and so my initializer is empty. And I just tested
+deleting the &lt;code class=&quot;highlighter-rouge&quot;&gt;knock.rb&lt;/code&gt; inititalizer file entirely, and my app seems to run
+fine without it, so it doesn’t seem that the file is required if you don’t need
+to configure anything.&lt;/p&gt;
+
+&lt;p&gt;Figuring this stuff out today was a bit of a drag, and I know there are other
+people out there who are frustrated, going through the same thing. Knock is
+great but it’s in a bit of a weird place right now. Don’t hesitate to
+&lt;a href=&quot;mailto:hello@davidgay.org&quot;&gt;email me&lt;/a&gt; with any questions you have, and I’ll try to point you in the
+right direction.&lt;/p&gt;
+
+&lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;Questions, comments, or tips for me? See a mistake in this post? &lt;a href=&quot;mailto:hello@davidgay.org&quot;&gt;Send me an
+email.&lt;/a&gt;&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      
+        <author>
+            <name>David Gay</name>
+          
+          
+        </author>
+      
+
+      
+        <category term="software" />
+      
+
+      
+        <category term="ruby" />
+      
+        <category term="rails" />
+      
+        <category term="jwt" />
+      
+        <category term="auth" />
+      
+        <category term="knock" />
+      
+        <category term="gem" />
+      
+        <category term="token" />
+      
+        <category term="api" />
+      
+
+      
+        <summary type="html">This post explains how to set up and use the knock gem for JWT auth in your Rails 6 API. Currently, the whole knock situation is a bit jacked up. From what I can tell, a new maintainer took over (thank you!) and is trying to get a solid release out the door, the first in three years. Unfortunately, the existing docs and blog posts available on knock are often unclear and outdated. But I figured out how to get things working in Rails 6, and now you can, too.</summary>
+      
+
+      
+      
+    </entry>
+  
   
   
     <entry>
