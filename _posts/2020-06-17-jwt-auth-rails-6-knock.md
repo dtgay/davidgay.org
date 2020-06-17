@@ -1,6 +1,6 @@
 ---
 layout: post
-category: software
+category: programming
 tags: ruby rails jwt auth knock gem token api
 date: 2020-06-17 17:15:00
 description: >-
