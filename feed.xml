@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-06-17T17:32:48-04:00</updated>
+  <updated>2020-06-17T18:09:44-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -191,9 +191,11 @@ in it.&lt;/p&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Add that as a &lt;code class=&quot;highlighter-rouge&quot;&gt;Bearer&lt;/code&gt; token to the auth header of further requests, and you
-should be all set. Without this token, your requests should return a &lt;code class=&quot;highlighter-rouge&quot;&gt;401
-Unauthorized&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Add that long string as a &lt;code class=&quot;highlighter-rouge&quot;&gt;Bearer&lt;/code&gt; token to the auth header of further
+requests, and you should be all set. Without this token, your requests should
+return a &lt;code class=&quot;highlighter-rouge&quot;&gt;401 Unauthorized&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, in your controllers, you can use &lt;code class=&quot;highlighter-rouge&quot;&gt;current_user&lt;/code&gt; to access the auth’d user.&lt;/p&gt;
 
 &lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
 

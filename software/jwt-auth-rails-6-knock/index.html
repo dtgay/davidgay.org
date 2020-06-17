@@ -701,9 +701,11 @@ in it.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
 
-<p>Add that as a <code class="highlighter-rouge">Bearer</code> token to the auth header of further requests, and you
-should be all set. Without this token, your requests should return a <code class="highlighter-rouge">401
-Unauthorized</code>.</p>
+<p>Add that long string as a <code class="highlighter-rouge">Bearer</code> token to the auth header of further
+requests, and you should be all set. Without this token, your requests should
+return a <code class="highlighter-rouge">401 Unauthorized</code>.</p>
+
+<p>Now, in your controllers, you can use <code class="highlighter-rouge">current_user</code> to access the auth’d user.</p>
 
 <h2 id="troubleshooting">Troubleshooting</h2>
 
