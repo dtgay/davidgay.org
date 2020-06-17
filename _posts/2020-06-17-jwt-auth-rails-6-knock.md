@@ -172,9 +172,11 @@ You should get back something like this:
 }
 ```
 
-Add that as a `Bearer` token to the auth header of further requests, and you
-should be all set. Without this token, your requests should return a `401
-Unauthorized`.
+Add that long string as a `Bearer` token to the auth header of further
+requests, and you should be all set. Without this token, your requests should
+return a `401 Unauthorized`.
+
+Now, in your controllers, you can use `current_user` to access the auth'd user.
 
 ## Troubleshooting
 
