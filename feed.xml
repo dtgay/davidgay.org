@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-06-17T18:42:17-04:00</updated>
+  <updated>2020-06-17T19:47:11-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -31,12 +31,12 @@
       <title type="html">JWT Auth in Rails 6 with Knock</title>
       
       
-      <link href="https://davidgay.org/software/jwt-auth-rails-6-knock/" rel="alternate" type="text/html" title="JWT Auth in Rails 6 with Knock" />
+      <link href="https://davidgay.org/programming/jwt-auth-rails-6-knock/" rel="alternate" type="text/html" title="JWT Auth in Rails 6 with Knock" />
       
       <published>2020-06-17T13:15:00-04:00</published>
       <updated>2020-06-17T13:15:00-04:00</updated>
-      <id>https://davidgay.org/software/jwt-auth-rails-6-knock</id>
-      <content type="html" xml:base="https://davidgay.org/software/jwt-auth-rails-6-knock/">&lt;p&gt;This post explains how to set up and use the &lt;a href=&quot;https://github.com/nsarno/knock&quot;&gt;knock gem&lt;/a&gt; for JWT auth in
+      <id>https://davidgay.org/programming/jwt-auth-rails-6-knock</id>
+      <content type="html" xml:base="https://davidgay.org/programming/jwt-auth-rails-6-knock/">&lt;p&gt;This post explains how to set up and use the &lt;a href=&quot;https://github.com/nsarno/knock&quot;&gt;knock gem&lt;/a&gt; for JWT auth in
 your Rails 6 API. Currently, the whole knock &lt;a href=&quot;https://github.com/nsarno/knock/pull/248&quot;&gt;situation&lt;/a&gt; is a &lt;a href=&quot;https://github.com/nsarno/knock/issues/250&quot;&gt;bit&lt;/a&gt;
 &lt;a href=&quot;https://github.com/nsarno/knock/issues/249&quot;&gt;confusing&lt;/a&gt;. From what I can tell, a new maintainer took over (thank you!)
 and is trying to get a solid release out the door, the first in three years.
@@ -245,7 +245,7 @@ email.&lt;/a&gt;&lt;/p&gt;</content>
       
 
       
-        <category term="software" />
+        <category term="programming" />
       
 
       
