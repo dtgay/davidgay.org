@@ -3,6 +3,7 @@ layout: post
 category: programming
 tags: ruby rails jwt auth knock gem token api
 date: 2020-06-17 17:15:00
+updated: 2020-06-18 13:20:00
 description: >-
   How to set up and use the knock gem to add JWT auth to your Rails 6 API.
 title: JWT Auth in Rails 6 with Knock
@@ -141,6 +142,40 @@ you need to point to that `create` action. You didn't have to write a `create`
 action yourself, because it's automagically provided by
 `Knock::AuthTokenController`.
 
+## Configuration
+
+You may need to configure knock via an initializer, which is a file you can
+create at `config/initializers/knock.rb` with these contents:
+
+```ruby
+Knock.setup do |config|
+end
+```
+
+This initializer can be given a few different options, as detailed in [the
+docs][5]. You may need to add some of those.
+
+My app ran fine locally in my development environment without any options, but
+for production, I had to configure the signature key, like so:
+
+```ruby
+Knock.setup do |config|
+  config.token_secret_signature_key = -> { Rails.application.credentials.read }
+end
+```
+
+Without that line, I was getting a fatal error in my `log/production.log` that
+began like this:
+
+```
+TypeError (no implicit conversion of nil into String)
+```
+
+*Locally, where my app seemed to work with an empty initializer, I tried
+deleting that `knock.rb` inititalizer file entirely, and my app seemed to run
+fine (locally) without it, so it doesn't seem that the file is required if you
+don't need to configure anything.*
+
 ## Give It a Go
 
 At this point, you should restart your Rails app. Then use a REST client
@@ -185,21 +220,8 @@ your things exactly how I name mine. Everything. I'm not sure -- since I
 just figured this stuff out -- but I think some things might need to be named
 in a certain way, at least by default.
 
-If that doesn't help, try adding a file, `config/initializers/knock.rb`,
-with these contents:
-
-```ruby
-Knock.setup do |config|
-end
-```
-
-This initializer can be given a few different options, as detailed in [the
-docs][5]. You may need to add some of those.
-
-I don't use any options, and so my initializer is empty. And I just tested
-deleting the `knock.rb` inititalizer file entirely, and my app seems to run
-fine without it, so it doesn't seem that the file is required if you don't need
-to configure anything.
+Second, take a closer look at the [official docs][5] and the configuration
+options [I mention above](#configuration).
 
 Figuring this stuff out today was a bit of a drag, and I know there are other
 people out there who are frustrated, going through the same thing. Knock is
