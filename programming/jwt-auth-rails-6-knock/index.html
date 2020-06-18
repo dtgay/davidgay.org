@@ -76,7 +76,7 @@
     
       <h1 class="post-title" itemprop="name headline">JWT Auth in Rails 6 with Knock</h1>
     
-    <p class="post-meta"><time datetime="2020-06-17T13:15:00-04:00" itemprop="datePublished">Jun 17, 2020</time> •
+    <p class="post-meta"><time datetime="2020-06-17T13:15:00-04:00" itemprop="datePublished">Jun 17, 2020</time> • Updated <time datetime="2020-06-18T09:20:00-04:00" itemprop="dateUpdated">Jun 18, 2020</time> •
   
     
     
@@ -672,6 +672,37 @@ you need to point to that <code class="highlighter-rouge">create</code> action. 
 action yourself, because it’s automagically provided by
 <code class="highlighter-rouge">Knock::AuthTokenController</code>.</p>
 
+<h2 id="configuration">Configuration</h2>
+
+<p>You may need to configure knock via an initializer, which is a file you can
+create at <code class="highlighter-rouge">config/initializers/knock.rb</code> with these contents:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Knock</span><span class="p">.</span><span class="nf">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This initializer can be given a few different options, as detailed in <a href="https://github.com/nsarno/knock/blob/master/README.md">the
+docs</a>. You may need to add some of those.</p>
+
+<p>My app ran fine locally in my development environment without any options, but
+for production, I had to configure the signature key, like so:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Knock</span><span class="p">.</span><span class="nf">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">token_secret_signature_key</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">credentials</span><span class="p">.</span><span class="nf">read</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Without that line, I was getting a fatal error in my <code class="highlighter-rouge">log/production.log</code> that
+began like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TypeError (no implicit conversion of nil into String)
+</code></pre></div></div>
+
+<p><em>Locally, where my app seemed to work with an empty initializer, I tried
+deleting that <code class="highlighter-rouge">knock.rb</code> inititalizer file entirely, and my app seemed to run
+fine (locally) without it, so it doesn’t seem that the file is required if you
+don’t need to configure anything.</em></p>
+
 <h2 id="give-it-a-go">Give It a Go</h2>
 
 <p>At this point, you should restart your Rails app. Then use a REST client
@@ -714,20 +745,8 @@ your things exactly how I name mine. Everything. I’m not sure – since I
 just figured this stuff out – but I think some things might need to be named
 in a certain way, at least by default.</p>
 
-<p>If that doesn’t help, try adding a file, <code class="highlighter-rouge">config/initializers/knock.rb</code>,
-with these contents:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Knock</span><span class="p">.</span><span class="nf">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>This initializer can be given a few different options, as detailed in <a href="https://github.com/nsarno/knock/blob/master/README.md">the
-docs</a>. You may need to add some of those.</p>
-
-<p>I don’t use any options, and so my initializer is empty. And I just tested
-deleting the <code class="highlighter-rouge">knock.rb</code> inititalizer file entirely, and my app seems to run
-fine without it, so it doesn’t seem that the file is required if you don’t need
-to configure anything.</p>
+<p>Second, take a closer look at the <a href="https://github.com/nsarno/knock/blob/master/README.md">official docs</a> and the configuration
+options <a href="#configuration">I mention above</a>.</p>
 
 <p>Figuring this stuff out today was a bit of a drag, and I know there are other
 people out there who are frustrated, going through the same thing. Knock is

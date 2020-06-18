@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-06-17T19:47:11-04:00</updated>
+  <updated>2020-06-18T13:36:17-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -34,7 +34,7 @@
       <link href="https://davidgay.org/programming/jwt-auth-rails-6-knock/" rel="alternate" type="text/html" title="JWT Auth in Rails 6 with Knock" />
       
       <published>2020-06-17T13:15:00-04:00</published>
-      <updated>2020-06-17T13:15:00-04:00</updated>
+      <updated>2020-06-18T09:20:00-04:00</updated>
       <id>https://davidgay.org/programming/jwt-auth-rails-6-knock</id>
       <content type="html" xml:base="https://davidgay.org/programming/jwt-auth-rails-6-knock/">&lt;p&gt;This post explains how to set up and use the &lt;a href=&quot;https://github.com/nsarno/knock&quot;&gt;knock gem&lt;/a&gt; for JWT auth in
 your Rails 6 API. Currently, the whole knock &lt;a href=&quot;https://github.com/nsarno/knock/pull/248&quot;&gt;situation&lt;/a&gt; is a &lt;a href=&quot;https://github.com/nsarno/knock/issues/250&quot;&gt;bit&lt;/a&gt;
@@ -162,6 +162,37 @@ you need to point to that &lt;code class=&quot;highlighter-rouge&quot;&gt;create
 action yourself, because it’s automagically provided by
 &lt;code class=&quot;highlighter-rouge&quot;&gt;Knock::AuthTokenController&lt;/code&gt;.&lt;/p&gt;
 
+&lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;You may need to configure knock via an initializer, which is a file you can
+create at &lt;code class=&quot;highlighter-rouge&quot;&gt;config/initializers/knock.rb&lt;/code&gt; with these contents:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This initializer can be given a few different options, as detailed in &lt;a href=&quot;https://github.com/nsarno/knock/blob/master/README.md&quot;&gt;the
+docs&lt;/a&gt;. You may need to add some of those.&lt;/p&gt;
+
+&lt;p&gt;My app ran fine locally in my development environment without any options, but
+for production, I had to configure the signature key, like so:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;token_secret_signature_key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;credentials&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Without that line, I was getting a fatal error in my &lt;code class=&quot;highlighter-rouge&quot;&gt;log/production.log&lt;/code&gt; that
+began like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;TypeError (no implicit conversion of nil into String)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Locally, where my app seemed to work with an empty initializer, I tried
+deleting that &lt;code class=&quot;highlighter-rouge&quot;&gt;knock.rb&lt;/code&gt; inititalizer file entirely, and my app seemed to run
+fine (locally) without it, so it doesn’t seem that the file is required if you
+don’t need to configure anything.&lt;/em&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;give-it-a-go&quot;&gt;Give It a Go&lt;/h2&gt;
 
 &lt;p&gt;At this point, you should restart your Rails app. Then use a REST client
@@ -204,20 +235,8 @@ your things exactly how I name mine. Everything. I’m not sure – since I
 just figured this stuff out – but I think some things might need to be named
 in a certain way, at least by default.&lt;/p&gt;
 
-&lt;p&gt;If that doesn’t help, try adding a file, &lt;code class=&quot;highlighter-rouge&quot;&gt;config/initializers/knock.rb&lt;/code&gt;,
-with these contents:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This initializer can be given a few different options, as detailed in &lt;a href=&quot;https://github.com/nsarno/knock/blob/master/README.md&quot;&gt;the
-docs&lt;/a&gt;. You may need to add some of those.&lt;/p&gt;
-
-&lt;p&gt;I don’t use any options, and so my initializer is empty. And I just tested
-deleting the &lt;code class=&quot;highlighter-rouge&quot;&gt;knock.rb&lt;/code&gt; inititalizer file entirely, and my app seems to run
-fine without it, so it doesn’t seem that the file is required if you don’t need
-to configure anything.&lt;/p&gt;
+&lt;p&gt;Second, take a closer look at the &lt;a href=&quot;https://github.com/nsarno/knock/blob/master/README.md&quot;&gt;official docs&lt;/a&gt; and the configuration
+options &lt;a href=&quot;#configuration&quot;&gt;I mention above&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Figuring this stuff out today was a bit of a drag, and I know there are other
 people out there who are frustrated, going through the same thing. Knock is
