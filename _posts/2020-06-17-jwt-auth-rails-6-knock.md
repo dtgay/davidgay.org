@@ -3,7 +3,7 @@ layout: post
 category: programming
 tags: ruby rails jwt auth knock gem token api
 date: 2020-06-17 17:15:00
-updated: 2020-06-18 13:20:00
+updated: 2020-06-23 18:30:00
 description: >-
   How to set up and use the knock gem to add JWT auth to your Rails 6 API.
 title: JWT Auth in Rails 6 with Knock
@@ -49,7 +49,7 @@ named differently, though I haven't tried any of that stuff out.
 The main requirement is that you either use `has_secure_password` in your
 `User` model, or, alternatively, implement an `authenticate` method that does
 the same sort of thing that the `authenticate` method added by
-`has_secure_password` does (see [the docs for that method][6]). For most
+`has_secure_password` does (see [the docs for that method][6]). For many
 people, adding `has_secure_password` like this will be all you need:
 
 ```ruby
@@ -59,12 +59,71 @@ class User < ApplicationRecord
 end
 ```
 
-For my purposes, I had to implement my own `authenticate` method and my own
+The default setup with `has_secure_password` assumes that users will be
+authenticating with an `email` and a `password` and not doing anything fancy
+to authenticate other than checking the validity of the email/password
+combination. **If this isn't the case, you need to take further steps.**
+Otherwise, you can skip this next section.
+
+### Further Steps for Non-Default Auth
+
+You may want to have auth occur with a `username` and `password`, or something
+similar, instead of the default `email` and `password`. In that case, you need
+to override `self.from_token_request(request)` in your `User` model. For
+instance, if you want to use a `username` instead of an `email` you'll need
+something like this:
+
+```ruby
+class User < ApplicationRecord
+  def self.from_token_request(request)
+    user = User.find_by(name: request.params[:auth][:username])
+    user ? user : nil
+  end
+end
+```
+
+The reason you need to override this method is because the default
+`self.from_token_request(request)` looks up the authenticating user by `email`.
+The above version causes the user to be looked up by `username` instead.
+
+For my purposes, I had to implement my own `authenticate` method as well as
 `self.from_token_request` as mentioned in [the official docs][5], because I
 have an unusual situation where my API actually authenticates with _another_
-API for its login process. But since that's unusual, I'll explain that in
-a forthcoming blog post, rather than at this moment. I'll update this post with
-a link to that post when I write it. If you need help now, [email me][7].
+API for its login process.
+
+Basically, you will want to override `authenticate(password)` if you want
+your authentication to entail something other than simply checking the user's
+password:
+
+```ruby
+class User < ApplicationRecord
+  def authenticate(password)
+    # Do your custom authentication here.
+    # Return `true` if the auth should succeed, or `false` if it should fail.
+  end
+end
+```
+
+Without sharing too much private code, my override looks something like
+this:
+
+```ruby
+class User < ApplicationRecord
+  def authenticate(password)
+    # ... I do a few things up here, then...
+    if login # `login` is a custom method of mine, not a knock thing.
+      self.last_logged_in = Time.now # Another custom thing of mine.
+      save # This returns true if the updates I made to the user succeed.
+    else
+      false # This causes the auth to fail.
+    end
+  end
+end
+```
+
+You don't have to make modifications to your user in your
+`authenticate(password)`. I do, but you don't have to. All you need to do
+is make sure your `authenticate(password)` returns either `true` or `false`.
 
 ## The Controllers
 
@@ -73,6 +132,19 @@ any issues, try naming your controllers and routes exactly like mine.
 
 In `controllers/`, create a `user_token_controller.rb` file with these
 contents:
+
+```ruby
+class UserTokenController < Knock::AuthTokenController
+end
+```
+
+That's right: empty controller. The `Knock::AuthTokenController` that it
+inherits from provides everything you need.
+
+*Unless*, of course, you're using a non-standard auth setup [as mentioned
+above](#further-steps-for-non-default-auth). In that case, you'll want to
+override the `auth_params`. For instance, if your auth setup uses a `username`
+instead of an `email`, your controller might look something like this:
 
 ```ruby
 class UserTokenController < Knock::AuthTokenController
@@ -94,9 +166,6 @@ module Api
     class UserTokenController < Knock::AuthTokenController
       private
       def auth_params
-        # Without overriding the auth_params here, you get "unpermitted
-        #   parameter" errors for username. The call seems to work anyway,
-        #   but this eliminates the error message from your logs.
         params.require(:auth).permit(:username, :password)
       end
     end
@@ -106,10 +175,6 @@ end
 
 In that `permit(...)`, you should permit params you need for your
 authentication process. Mine just takes a username and password.
-
-You'll notice that this controller looks basically empty, and that's because
-it is. The `Knock::AuthTokenController` that it inherits from provides
-everything you need.
 
 Second, at the top of your `ApplicationController` in
 `controllers/application_controller.rb`, add these lines:
@@ -183,6 +248,20 @@ to see if things are working.
 
 A `POST` request to your route (my path is `http://localhost:3000/api/v1/auth`)
 might look like this:
+
+```json
+{
+  "auth": {
+    "email": "demouser@example.com",
+    "password": "testingpassword123"
+  }
+}
+```
+
+Or if you have a non-standard auth setup [as mentioned
+above](#further-steps-for-non-default-auth), your request body might need to
+look different. For instance, if your setup uses a `username` instead of an
+`email`, it might look like this:
 
 ```json
 {
