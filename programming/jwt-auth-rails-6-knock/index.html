@@ -610,7 +610,7 @@ something like this:</p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">from_token_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">name: </span><span class="n">request</span><span class="p">.</span><span class="nf">params</span><span class="p">[</span><span class="ss">:auth</span><span class="p">][</span><span class="ss">:username</span><span class="p">])</span>
-    <span class="n">user</span> <span class="p">?</span> <span class="n">user</span> <span class="p">:</span> <span class="kp">nil</span>
+    <span class="n">user</span> <span class="c1"># This will be nil if no user is found.</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
