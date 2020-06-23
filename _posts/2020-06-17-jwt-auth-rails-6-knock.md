@@ -77,7 +77,7 @@ something like this:
 class User < ApplicationRecord
   def self.from_token_request(request)
     user = User.find_by(name: request.params[:auth][:username])
-    user ? user : nil
+    user # This will be nil if no user is found.
   end
 end
 ```
