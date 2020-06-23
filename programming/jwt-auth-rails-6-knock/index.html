@@ -76,7 +76,7 @@
     
       <h1 class="post-title" itemprop="name headline">JWT Auth in Rails 6 with Knock</h1>
     
-    <p class="post-meta"><time datetime="2020-06-17T13:15:00-04:00" itemprop="datePublished">Jun 17, 2020</time> • Updated <time datetime="2020-06-18T09:20:00-04:00" itemprop="dateUpdated">Jun 18, 2020</time> •
+    <p class="post-meta"><time datetime="2020-06-17T13:15:00-04:00" itemprop="datePublished">Jun 17, 2020</time> • Updated <time datetime="2020-06-23T14:30:00-04:00" itemprop="dateUpdated">Jun 23, 2020</time> •
   
     
     
@@ -584,7 +584,7 @@ named differently, though I haven’t tried any of that stuff out.</p>
 <p>The main requirement is that you either use <code class="highlighter-rouge">has_secure_password</code> in your
 <code class="highlighter-rouge">User</code> model, or, alternatively, implement an <code class="highlighter-rouge">authenticate</code> method that does
 the same sort of thing that the <code class="highlighter-rouge">authenticate</code> method added by
-<code class="highlighter-rouge">has_secure_password</code> does (see <a href="https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password">the docs for that method</a>). For most
+<code class="highlighter-rouge">has_secure_password</code> does (see <a href="https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password">the docs for that method</a>). For many
 people, adding <code class="highlighter-rouge">has_secure_password</code> like this will be all you need:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
@@ -593,12 +593,68 @@ people, adding <code class="highlighter-rouge">has_secure_password</code> like t
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>For my purposes, I had to implement my own <code class="highlighter-rouge">authenticate</code> method and my own
+<p>The default setup with <code class="highlighter-rouge">has_secure_password</code> assumes that users will be
+authenticating with an <code class="highlighter-rouge">email</code> and a <code class="highlighter-rouge">password</code> and not doing anything fancy
+to authenticate other than checking the validity of the email/password
+combination. <strong>If this isn’t the case, you need to take further steps.</strong>
+Otherwise, you can skip this next section.</p>
+
+<h3 id="further-steps-for-non-default-auth">Further Steps for Non-Default Auth</h3>
+
+<p>You may want to have auth occur with a <code class="highlighter-rouge">username</code> and <code class="highlighter-rouge">password</code>, or something
+similar, instead of the default <code class="highlighter-rouge">email</code> and <code class="highlighter-rouge">password</code>. In that case, you need
+to override <code class="highlighter-rouge">self.from_token_request(request)</code> in your <code class="highlighter-rouge">User</code> model. For
+instance, if you want to use a <code class="highlighter-rouge">username</code> instead of an <code class="highlighter-rouge">email</code> you’ll need
+something like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">from_token_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">name: </span><span class="n">request</span><span class="p">.</span><span class="nf">params</span><span class="p">[</span><span class="ss">:auth</span><span class="p">][</span><span class="ss">:username</span><span class="p">])</span>
+    <span class="n">user</span> <span class="p">?</span> <span class="n">user</span> <span class="p">:</span> <span class="kp">nil</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>The reason you need to override this method is because the default
+<code class="highlighter-rouge">self.from_token_request(request)</code> looks up the authenticating user by <code class="highlighter-rouge">email</code>.
+The above version causes the user to be looked up by <code class="highlighter-rouge">username</code> instead.</p>
+
+<p>For my purposes, I had to implement my own <code class="highlighter-rouge">authenticate</code> method as well as
 <code class="highlighter-rouge">self.from_token_request</code> as mentioned in <a href="https://github.com/nsarno/knock/blob/master/README.md">the official docs</a>, because I
 have an unusual situation where my API actually authenticates with <em>another</em>
-API for its login process. But since that’s unusual, I’ll explain that in
-a forthcoming blog post, rather than at this moment. I’ll update this post with
-a link to that post when I write it. If you need help now, <a href="mailto:hello@davidgay.org">email me</a>.</p>
+API for its login process.</p>
+
+<p>Basically, you will want to override <code class="highlighter-rouge">authenticate(password)</code> if you want
+your authentication to entail something other than simply checking the user’s
+password:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+    <span class="c1"># Do your custom authentication here.</span>
+    <span class="c1"># Return `true` if the auth should succeed, or `false` if it should fail.</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Without sharing too much private code, my override looks something like
+this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+    <span class="c1"># ... I do a few things up here, then...</span>
+    <span class="k">if</span> <span class="n">login</span> <span class="c1"># `login` is a custom method of mine, not a knock thing.</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">last_logged_in</span> <span class="o">=</span> <span class="no">Time</span><span class="p">.</span><span class="nf">now</span> <span class="c1"># Another custom thing of mine.</span>
+      <span class="n">save</span> <span class="c1"># This returns true if the updates I made to the user succeed.</span>
+    <span class="k">else</span>
+      <span class="kp">false</span> <span class="c1"># This causes the auth to fail.</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>You don’t have to make modifications to your user in your
+<code class="highlighter-rouge">authenticate(password)</code>. I do, but you don’t have to. All you need to do
+is make sure your <code class="highlighter-rouge">authenticate(password)</code> returns either <code class="highlighter-rouge">true</code> or <code class="highlighter-rouge">false</code>.</p>
 
 <h2 id="the-controllers">The Controllers</h2>
 
@@ -607,6 +663,18 @@ any issues, try naming your controllers and routes exactly like mine.</p>
 
 <p>In <code class="highlighter-rouge">controllers/</code>, create a <code class="highlighter-rouge">user_token_controller.rb</code> file with these
 contents:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">UserTokenController</span> <span class="o">&lt;</span> <span class="no">Knock</span><span class="o">::</span><span class="no">AuthTokenController</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>That’s right: empty controller. The <code class="highlighter-rouge">Knock::AuthTokenController</code> that it
+inherits from provides everything you need.</p>
+
+<p><em>Unless</em>, of course, you’re using a non-standard auth setup <a href="#further-steps-for-non-default-auth">as mentioned
+above</a>. In that case, you’ll want to
+override the <code class="highlighter-rouge">auth_params</code>. For instance, if your auth setup uses a <code class="highlighter-rouge">username</code>
+instead of an <code class="highlighter-rouge">email</code>, your controller might look something like this:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">UserTokenController</span> <span class="o">&lt;</span> <span class="no">Knock</span><span class="o">::</span><span class="no">AuthTokenController</span>
   <span class="kp">private</span>
@@ -626,9 +694,6 @@ contents:</p>
     <span class="k">class</span> <span class="nc">UserTokenController</span> <span class="o">&lt;</span> <span class="no">Knock</span><span class="o">::</span><span class="no">AuthTokenController</span>
       <span class="kp">private</span>
       <span class="k">def</span> <span class="nf">auth_params</span>
-        <span class="c1"># Without overriding the auth_params here, you get "unpermitted</span>
-        <span class="c1">#   parameter" errors for username. The call seems to work anyway,</span>
-        <span class="c1">#   but this eliminates the error message from your logs.</span>
         <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:auth</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:username</span><span class="p">,</span> <span class="ss">:password</span><span class="p">)</span>
       <span class="k">end</span>
     <span class="k">end</span>
@@ -638,10 +703,6 @@ contents:</p>
 
 <p>In that <code class="highlighter-rouge">permit(...)</code>, you should permit params you need for your
 authentication process. Mine just takes a username and password.</p>
-
-<p>You’ll notice that this controller looks basically empty, and that’s because
-it is. The <code class="highlighter-rouge">Knock::AuthTokenController</code> that it inherits from provides
-everything you need.</p>
 
 <p>Second, at the top of your <code class="highlighter-rouge">ApplicationController</code> in
 <code class="highlighter-rouge">controllers/application_controller.rb</code>, add these lines:</p>
@@ -710,6 +771,19 @@ to see if things are working.</p>
 
 <p>A <code class="highlighter-rouge">POST</code> request to your route (my path is <code class="highlighter-rouge">http://localhost:3000/api/v1/auth</code>)
 might look like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"auth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demouser@example.com"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testingpassword123"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Or if you have a non-standard auth setup <a href="#further-steps-for-non-default-auth">as mentioned
+above</a>, your request body might need to
+look different. For instance, if your setup uses a <code class="highlighter-rouge">username</code> instead of an
+<code class="highlighter-rouge">email</code>, it might look like this:</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"auth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">

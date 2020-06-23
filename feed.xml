@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2020-06-18T13:36:17-04:00</updated>
+  <updated>2020-06-23T18:54:21-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -34,7 +34,7 @@
       <link href="https://davidgay.org/programming/jwt-auth-rails-6-knock/" rel="alternate" type="text/html" title="JWT Auth in Rails 6 with Knock" />
       
       <published>2020-06-17T13:15:00-04:00</published>
-      <updated>2020-06-18T09:20:00-04:00</updated>
+      <updated>2020-06-23T14:30:00-04:00</updated>
       <id>https://davidgay.org/programming/jwt-auth-rails-6-knock</id>
       <content type="html" xml:base="https://davidgay.org/programming/jwt-auth-rails-6-knock/">&lt;p&gt;This post explains how to set up and use the &lt;a href=&quot;https://github.com/nsarno/knock&quot;&gt;knock gem&lt;/a&gt; for JWT auth in
 your Rails 6 API. Currently, the whole knock &lt;a href=&quot;https://github.com/nsarno/knock/pull/248&quot;&gt;situation&lt;/a&gt; is a &lt;a href=&quot;https://github.com/nsarno/knock/issues/250&quot;&gt;bit&lt;/a&gt;
@@ -74,7 +74,7 @@ named differently, though I haven’t tried any of that stuff out.&lt;/p&gt;
 &lt;p&gt;The main requirement is that you either use &lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_password&lt;/code&gt; in your
 &lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt; model, or, alternatively, implement an &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate&lt;/code&gt; method that does
 the same sort of thing that the &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate&lt;/code&gt; method added by
-&lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_password&lt;/code&gt; does (see &lt;a href=&quot;https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password&quot;&gt;the docs for that method&lt;/a&gt;). For most
+&lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_password&lt;/code&gt; does (see &lt;a href=&quot;https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password&quot;&gt;the docs for that method&lt;/a&gt;). For many
 people, adding &lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_password&lt;/code&gt; like this will be all you need:&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
@@ -83,12 +83,68 @@ people, adding &lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_passwo
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;For my purposes, I had to implement my own &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate&lt;/code&gt; method and my own
+&lt;p&gt;The default setup with &lt;code class=&quot;highlighter-rouge&quot;&gt;has_secure_password&lt;/code&gt; assumes that users will be
+authenticating with an &lt;code class=&quot;highlighter-rouge&quot;&gt;email&lt;/code&gt; and a &lt;code class=&quot;highlighter-rouge&quot;&gt;password&lt;/code&gt; and not doing anything fancy
+to authenticate other than checking the validity of the email/password
+combination. &lt;strong&gt;If this isn’t the case, you need to take further steps.&lt;/strong&gt;
+Otherwise, you can skip this next section.&lt;/p&gt;
+
+&lt;h3 id=&quot;further-steps-for-non-default-auth&quot;&gt;Further Steps for Non-Default Auth&lt;/h3&gt;
+
+&lt;p&gt;You may want to have auth occur with a &lt;code class=&quot;highlighter-rouge&quot;&gt;username&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;password&lt;/code&gt;, or something
+similar, instead of the default &lt;code class=&quot;highlighter-rouge&quot;&gt;email&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;password&lt;/code&gt;. In that case, you need
+to override &lt;code class=&quot;highlighter-rouge&quot;&gt;self.from_token_request(request)&lt;/code&gt; in your &lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt; model. For
+instance, if you want to use a &lt;code class=&quot;highlighter-rouge&quot;&gt;username&lt;/code&gt; instead of an &lt;code class=&quot;highlighter-rouge&quot;&gt;email&lt;/code&gt; you’ll need
+something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from_token_request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find_by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;name: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:auth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The reason you need to override this method is because the default
+&lt;code class=&quot;highlighter-rouge&quot;&gt;self.from_token_request(request)&lt;/code&gt; looks up the authenticating user by &lt;code class=&quot;highlighter-rouge&quot;&gt;email&lt;/code&gt;.
+The above version causes the user to be looked up by &lt;code class=&quot;highlighter-rouge&quot;&gt;username&lt;/code&gt; instead.&lt;/p&gt;
+
+&lt;p&gt;For my purposes, I had to implement my own &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate&lt;/code&gt; method as well as
 &lt;code class=&quot;highlighter-rouge&quot;&gt;self.from_token_request&lt;/code&gt; as mentioned in &lt;a href=&quot;https://github.com/nsarno/knock/blob/master/README.md&quot;&gt;the official docs&lt;/a&gt;, because I
 have an unusual situation where my API actually authenticates with &lt;em&gt;another&lt;/em&gt;
-API for its login process. But since that’s unusual, I’ll explain that in
-a forthcoming blog post, rather than at this moment. I’ll update this post with
-a link to that post when I write it. If you need help now, &lt;a href=&quot;mailto:hello@davidgay.org&quot;&gt;email me&lt;/a&gt;.&lt;/p&gt;
+API for its login process.&lt;/p&gt;
+
+&lt;p&gt;Basically, you will want to override &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate(password)&lt;/code&gt; if you want
+your authentication to entail something other than simply checking the user’s
+password:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;authenticate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Do your custom authentication here.&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Return `true` if the auth should succeed, or `false` if it should fail.&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Without sharing too much private code, my override looks something like
+this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;authenticate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ... I do a few things up here, then...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;login&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# `login` is a custom method of mine, not a knock thing.&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;last_logged_in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;now&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Another custom thing of mine.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;save&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# This returns true if the updates I made to the user succeed.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+      &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# This causes the auth to fail.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You don’t have to make modifications to your user in your
+&lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate(password)&lt;/code&gt;. I do, but you don’t have to. All you need to do
+is make sure your &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate(password)&lt;/code&gt; returns either &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;the-controllers&quot;&gt;The Controllers&lt;/h2&gt;
 
@@ -97,6 +153,18 @@ any issues, try naming your controllers and routes exactly like mine.&lt;/p&gt;
 
 &lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;controllers/&lt;/code&gt;, create a &lt;code class=&quot;highlighter-rouge&quot;&gt;user_token_controller.rb&lt;/code&gt; file with these
 contents:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserTokenController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AuthTokenController&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That’s right: empty controller. The &lt;code class=&quot;highlighter-rouge&quot;&gt;Knock::AuthTokenController&lt;/code&gt; that it
+inherits from provides everything you need.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Unless&lt;/em&gt;, of course, you’re using a non-standard auth setup &lt;a href=&quot;#further-steps-for-non-default-auth&quot;&gt;as mentioned
+above&lt;/a&gt;. In that case, you’ll want to
+override the &lt;code class=&quot;highlighter-rouge&quot;&gt;auth_params&lt;/code&gt;. For instance, if your auth setup uses a &lt;code class=&quot;highlighter-rouge&quot;&gt;username&lt;/code&gt;
+instead of an &lt;code class=&quot;highlighter-rouge&quot;&gt;email&lt;/code&gt;, your controller might look something like this:&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserTokenController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AuthTokenController&lt;/span&gt;
   &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
@@ -116,9 +184,6 @@ contents:&lt;/p&gt;
     &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserTokenController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Knock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AuthTokenController&lt;/span&gt;
       &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
       &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;auth_params&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;# Without overriding the auth_params here, you get &quot;unpermitted&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;#   parameter&quot; errors for username. The call seems to work anyway,&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;#   but this eliminates the error message from your logs.&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:auth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
       &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
@@ -128,10 +193,6 @@ contents:&lt;/p&gt;
 
 &lt;p&gt;In that &lt;code class=&quot;highlighter-rouge&quot;&gt;permit(...)&lt;/code&gt;, you should permit params you need for your
 authentication process. Mine just takes a username and password.&lt;/p&gt;
-
-&lt;p&gt;You’ll notice that this controller looks basically empty, and that’s because
-it is. The &lt;code class=&quot;highlighter-rouge&quot;&gt;Knock::AuthTokenController&lt;/code&gt; that it inherits from provides
-everything you need.&lt;/p&gt;
 
 &lt;p&gt;Second, at the top of your &lt;code class=&quot;highlighter-rouge&quot;&gt;ApplicationController&lt;/code&gt; in
 &lt;code class=&quot;highlighter-rouge&quot;&gt;controllers/application_controller.rb&lt;/code&gt;, add these lines:&lt;/p&gt;
@@ -200,6 +261,19 @@ to see if things are working.&lt;/p&gt;
 
 &lt;p&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; request to your route (my path is &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:3000/api/v1/auth&lt;/code&gt;)
 might look like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;auth&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;email&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;demouser@example.com&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;testingpassword123&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Or if you have a non-standard auth setup &lt;a href=&quot;#further-steps-for-non-default-auth&quot;&gt;as mentioned
+above&lt;/a&gt;, your request body might need to
+look different. For instance, if your setup uses a &lt;code class=&quot;highlighter-rouge&quot;&gt;username&lt;/code&gt; instead of an
+&lt;code class=&quot;highlighter-rouge&quot;&gt;email&lt;/code&gt;, it might look like this:&lt;/p&gt;
 
 &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;auth&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
