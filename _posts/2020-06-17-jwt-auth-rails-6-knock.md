@@ -3,7 +3,7 @@ layout: post
 category: programming
 tags: ruby rails jwt auth knock gem token api
 date: 2020-06-17 17:15:00
-updated: 2020-06-23 18:30:00
+updated: 2020-06-24 09:45:00
 description: >-
   How to set up and use the knock gem to add JWT auth to your Rails 6 API.
 title: JWT Auth in Rails 6 with Knock
@@ -76,8 +76,7 @@ something like this:
 ```ruby
 class User < ApplicationRecord
   def self.from_token_request(request)
-    user = User.find_by(name: request.params[:auth][:username])
-    user # This will be nil if no user is found.
+    User.find_by(name: request.params[:auth][:username])
   end
 end
 ```
