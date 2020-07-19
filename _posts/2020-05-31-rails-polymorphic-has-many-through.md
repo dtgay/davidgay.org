@@ -154,16 +154,8 @@ That's all there is to it. Now I can do stuff like:
 ```ruby
 # Find ItemStack for Item ID 2 at Place ID 2
 ItemStack.find_by(item_id: 2, itemable_id: 2, itemable_type: "Place")
-```
-
-Of course, you can write useful helper methods for your models to make
-things more concise, like:
-
-```ruby
-# In app/models/item_stack.rb
-def self.find_at_place(item_id, place_id)
-  find_by(item_id: item_id, itemable_id: place_id, itemable_type: "Place")
-end
+# Find `some_item` at `some_place`
+ItemStack.find_by(item: some_item, itemable: some_place)
 ```
 
 And maybe I want to add some validation to my `ItemStack`:
