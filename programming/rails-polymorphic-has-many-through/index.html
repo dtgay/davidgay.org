@@ -430,15 +430,8 @@ for.</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Find ItemStack for Item ID 2 at Place ID 2</span>
 <span class="no">ItemStack</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">item_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">itemable_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">itemable_type: </span><span class="s2">"Place"</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>Of course, you can write useful helper methods for your models to make
-things more concise, like:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># In app/models/item_stack.rb</span>
-<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">find_at_place</span><span class="p">(</span><span class="n">item_id</span><span class="p">,</span> <span class="n">place_id</span><span class="p">)</span>
-  <span class="n">find_by</span><span class="p">(</span><span class="ss">item_id: </span><span class="n">item_id</span><span class="p">,</span> <span class="ss">itemable_id: </span><span class="n">place_id</span><span class="p">,</span> <span class="ss">itemable_type: </span><span class="s2">"Place"</span><span class="p">)</span>
-<span class="k">end</span>
+<span class="c1"># Find `some_item` at `some_place`</span>
+<span class="no">ItemStack</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">item: </span><span class="n">some_item</span><span class="p">,</span> <span class="ss">itemable: </span><span class="n">some_place</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>And maybe I want to add some validation to my <code class="highlighter-rouge">ItemStack</code>:</p>
