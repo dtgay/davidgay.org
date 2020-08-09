@@ -3,6 +3,7 @@ layout: post
 category: programming
 tags: rails ruby active-record
 date: 2020-05-31 19:29:00
+updated: 2020-07-19 11:55:00
 description: >-
   Concise explanation of setting up a polymorphic has_many :through
   association in Ruby on Rails, with examples.
