@@ -6,11 +6,11 @@ description: >-
 title: "About"
 ---
 
-Hello! I'm David Gay. [I'm a software developer.](https://github.com/dtgay).
-I mostly write [Ruby](https://www.ruby-lang.org/), my favorite programming
-language. In my free time, I read books, listen to many kinds of music, enjoy
-camping and fires, play a little guitar, run a Pathfinder 2e game for some
-friends, and write more Ruby.
+Hello! I'm David Gay. [I'm a software developer.](https://github.com/dtgay) I
+mostly write [Ruby](https://www.ruby-lang.org/), my favorite programming
+language. Besides programming, I read books, discover and absorb new music,
+enjoy camping and fires, play chess, play a little guitar, and run a Pathfinder
+2e game for some friends.
 
 ## This Site
 
