@@ -173,14 +173,6 @@ allowing me to use Vim and my `.vimrc` along the way.
 [Xnip][19] is the nicest screenshotting tool I've tried. It's smooth, has
 plenty of free features, and Just Works™️.
 
-## [Slack][20]
-
-Everyone and their grandmother uses [Slack][20] now, so that means I do, too.
-It's alright, though I wish it was native and not Electron.
-
-**Other messaging tools I've used:** IRC (Remember IRC? It's still around.
-We could go back; it's not too late. Anyone?)
-
 ## Feedback
 
 Questions, comments, or tips for me? See a mistake in this post? [Send me an
@@ -206,4 +198,3 @@ email.](mailto:hello@davidgay.org)
 [17]: https://www.videolan.org/vlc/index.html
 [18]: https://github.com/qvacua/vimr
 [19]: https://xnipapp.com/
-[20]: https://slack.com/
