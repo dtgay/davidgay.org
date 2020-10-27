@@ -12,14 +12,14 @@ language. Besides programming, I...
 
 * Read books, fiction and nonfiction
 * Listen to and accumulate a huge amount of music, usually listening to full
-  albums start to finish (playlists are for drives only)
+  albums start to finish (playlists are for short drives only, or when I'm with
+  other people who don't do the album thing)
 * Play video games, especially RPGs, including
   [roguelikes](https://en.wikipedia.org/wiki/Roguelike) and
   [MUDs](https://en.wikipedia.org/wiki/MUD)
 * Go camping and have fires in my backyard
 * Run a Pathfinder 2e game for some friends (it's like D&D)
-* Cook meals
-* Exercise and run two miles every day
+* Cook meals and exercise
 * Play a little chess and guitar
 
 ## This Site
