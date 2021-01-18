@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  
+  
+  <title>Rails Setup with PostgreSQL, Tailwind CSS, and Stimulus | David Gay</title>
+  <meta name="description" content="How to set up a new Rails project with PostgreSQL, Tailwind CSS, and Stimulus.">
+  
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://davidgay.org/programming/rails-setup-postgres-tailwind-stimulus/">
+  <link rel="shortcut icon" type="image/png" href="/favicon.png">
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="David Gay" href="https://davidgay.org/feed.xml">
+
+  
+
+  
+  <meta property="og:title" content="Rails Setup with PostgreSQL, Tailwind CSS, and Stimulus">
+  <meta property="og:site_name" content="David Gay">
+  <meta property="og:url" content="https://davidgay.org/programming/rails-setup-postgres-tailwind-stimulus/">
+  <meta property="og:description" content="How to set up a new Rails project with PostgreSQL, Tailwind CSS, and Stimulus.">
+  
+  
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:title" content="Rails Setup with PostgreSQL, Tailwind CSS, and Stimulus">
+  <meta name="twitter:description" content="How to set up a new Rails project with PostgreSQL, Tailwind CSS, and Stimulus.">
+  
+  
+
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+
+  
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">David Gay</a>
+
+    <nav class="site-nav">
+      
+        
+        <a class="page-link" href="/about/">About</a>
+      
+        
+        <a class="page-link" href="/archives/">Archives</a>
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    
+      <h1 class="post-title" itemprop="name headline">Rails Setup with PostgreSQL, Tailwind CSS, and Stimulus</h1>
+    
+    <p class="post-meta"><time datetime="2020-10-07T13:00:00-04:00" itemprop="datePublished">Oct 7, 2020</time> • Updated <time datetime="2021-01-18T09:00:00-05:00" itemprop="dateUpdated">Jan 18, 2021</time> •
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/categories/programming/">programming</a>
+      
+    
+  
+
+
+ •
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/ruby/">ruby</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/rails/">rails</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/postgres/">postgres</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/tailwind/">tailwind</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/stimulus/">stimulus</a>
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+</p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>This is a brief tutorial detailing how I’ve set up new Rails 6 apps with
+PostgreSQL, <a href="https://tailwindcss.com/">Tailwind CSS</a>, and
+<a href="https://stimulus.hotwire.dev/">Stimulus</a>.</p>
+
+<p><strong>Update:</strong> I wrote this post back in October, and for whatever reason I never
+published it. I’m publishing it now, backdated to emphasize that I make no
+guarantees that everything in here is up-to-date. I will say, however, that
+with the <a href="https://hotwire.dev/">Hotwire</a> announcement and Tailwind 2.0, a
+setup like this has become even <em>more</em> attractive.</p>
+
+<!-- more -->
+
+<h2 id="requirements">Requirements</h2>
+
+<p>This post assumes you have Ruby, Rails, and PostgreSQL installed on a
+Unix-based operating system (like macOS or Linux). These instructions were
+created using Ruby 2.7.1, Rails 6.0.3.2, and Postgres 12.3, but will probably
+work fine on other setups as long as you’re on Rails 6 or greater.</p>
+
+<h2 id="rails-setup">Rails Setup</h2>
+
+<p>We’ll be creating a new rails app called <code class="highlighter-rouge">myapp</code>. Replace <code class="highlighter-rouge">myapp</code> with the
+desired name of your app throughout this post.</p>
+
+<p>Create a new Rails project, using Postgres as the database:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails new myapp <span class="nt">-d</span><span class="o">=</span>postgresql
+<span class="nb">cd </span>myapp
+</code></pre></div></div>
+
+<h3 id="gitignore">Gitignore</h3>
+
+<p>Add a <code class="highlighter-rouge">.gitignore</code> file in the project’s root directory. Here’s a good one:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Ignore bundler config.</span>
+/.bundle
+
+<span class="c"># Ignore all logfiles and tempfiles.</span>
+/log/<span class="k">*</span>
+/tmp/<span class="k">*</span>
+<span class="o">!</span>/log/.keep
+<span class="o">!</span>/tmp/.keep
+
+<span class="c"># Ignore pidfiles, but keep the directory.</span>
+/tmp/pids/<span class="k">*</span>
+<span class="o">!</span>/tmp/pids/
+<span class="o">!</span>/tmp/pids/.keep
+
+<span class="c"># Ignore uploaded files in development.</span>
+/storage/<span class="k">*</span>
+<span class="o">!</span>/storage/.keep
+
+/public/assets
+.byebug_history
+
+<span class="c"># Ignore master key for decrypting credentials and more.</span>
+/config/master.key
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log<span class="k">*</span>
+.yarn-integrity
+</code></pre></div></div>
+
+<p>I also like to ignore all files generated by my IDE, RubyMine, so I add this
+line:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Ignore Jetbrains files</span>
+<span class="k">**</span>/.idea/
+</code></pre></div></div>
+
+<p>You might want to include your IDE’s files or include just some of them. Or
+maybe you don’t use an IDE. Adapt accordingly.</p>
+
+<h3 id="readme-changelog-and-license">Readme, Changelog, and License</h3>
+
+<p>It’s at this point I add a readme, changelog, and license file to the project
+root. How you do this and in what format is up to you. I use markdown files
+for all three, and base my changelog on the format detailed at <a href="https://keepachangelog.com">Keep a
+Changelog</a>.</p>
+
+<h3 id="rubocop">Rubocop</h3>
+
+<p>Code linters are a point of contention in the development community. My
+preference is to use <a href="https://github.com/rails/rails/blob/master/.rubocop.yml">the heavily-tuned-down Rubocop config used in the
+official Rails repo</a>. I literally just dump this file as-is into my project
+root. You may have to set up Rubocop manually depending on your setup.
+RubyMine handles that for me.</p>
+
+<p>If you decide to use Rubocop, you’ll want to add the gems to your <code class="highlighter-rouge">Gemfile</code>.
+For all Rubocop setups, you’ll need the <code class="highlighter-rouge">rubocop</code> gem. If you’re using the
+Rails project’s config I mentioned above, you’ll need two additional gems.</p>
+
+<p>Here’s what I have in my <code class="highlighter-rouge">Gemfile</code>, under the <code class="highlighter-rouge">development</code> group:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s2">"rubocop"</span><span class="p">,</span> <span class="s2">"&gt;= 0.47"</span><span class="p">,</span> <span class="ss">require: </span><span class="kp">false</span>
+  <span class="n">gem</span> <span class="s2">"rubocop-performance"</span><span class="p">,</span> <span class="ss">require: </span><span class="kp">false</span>
+  <span class="n">gem</span> <span class="s2">"rubocop-rails"</span><span class="p">,</span> <span class="ss">require: </span><span class="kp">false</span>
+  <span class="c1"># There's some other stuff in here by default, too.</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="bundle">Bundle</h3>
+
+<p>Time to install all your gems if you haven’t already. Make sure you’re using
+<a href="https://github.com/rbenv/rbenv">rbenv</a> or an equivalent.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/bundle <span class="nb">install</span>
+</code></pre></div></div>
+
+<h2 id="database-setup">Database Setup</h2>
+
+<p>Before we hook things up to Rails, make sure Postgres is ready to go. You
+should create a role named <code class="highlighter-rouge">myapp</code> with a password and the <code class="highlighter-rouge">CREATEDB</code>
+privilege. Instructions on creating a role like this are widely available on
+the internet. You can do it through the shell or via a program like DataGrip
+or pgAdmin. Make sure to note down the password, you’ll need it.</p>
+
+<p>Once the role is created, add its name and password to <code class="highlighter-rouge">config/database.yml</code>.
+For example, if you set the password to <code class="highlighter-rouge">beanburrito</code>, your file would contain
+something like this:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># In config/database.yml</span>
+<span class="na">development</span><span class="pi">:</span>
+  <span class="s">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">myapp_development</span>
+  
+  <span class="na">username</span><span class="pi">:</span> <span class="s">myapp</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s">beanburrito</span>
+</code></pre></div></div>
+
+<p>Now you should be able to run the database setup and initial migration:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/rails db:setup db:migrate
+</code></pre></div></div>
+
+<h2 id="webpacker-setup">Webpacker Setup</h2>
+
+<p>At the time of this writing, by default, Rails uses webpack for JavaScript and
+the asset pipeline for CSS/SCSS/Sass. I know some people like to run both their
+JavaScript <em>and</em> CSS through webpack. The projects I’ve worked on recently take
+that route. I pass no judgement here, but if you want to do that, you’ll need
+to rejigger your files a bit, as follows.</p>
+
+<p><em>Note: For the purposes of this post, I’m writing these instructions for a
+pure CSS project. You can use a SCSS or Sass with Tailwind just fine, though.
+For info on that, check out <a href="https://tailwindcss.com/docs/using-with-preprocessors">this section of the Tailwind docs</a>.</em></p>
+
+<p>To run your CSS through webpack, move the stylesheets directory at
+<code class="highlighter-rouge">app/assets/stylesheets</code> to <code class="highlighter-rouge">app/javascript/stylesheets</code>. Some people like to
+rename the <code class="highlighter-rouge">javascript</code> directory at this point since it now contains CSS as
+well, but I leave that up to you.</p>
+
+<p>You’ll also want to open <code class="highlighter-rouge">app/views/layouts/application.html.erb</code> and change
+<code class="highlighter-rouge">stylesheet_link_tag</code> to <code class="highlighter-rouge">stylesheet_pack_tag</code>.</p>
+
+<p>Now you can create a file at <code class="highlighter-rouge">app/javascript/stylesheets/application.css</code> to be
+the main entrypoint for your CSS. Then, import it in your webpack entrypoint:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// In app/javascript/packs/application.js</span>
+<span class="k">import</span> <span class="dl">"</span><span class="s2">../stylesheets/application.css</span><span class="dl">"</span>
+</code></pre></div></div>
+
+<h2 id="tailwind-setup">Tailwind Setup</h2>
+
+<p>Next up is <a href="https://tailwindcss.com/">Tailwind</a> installation. I’ve been using Tailwind for a year or
+two, and I really dig it. The utility-first structure seems pretty good, and
+it’s easily to customize and extend beyond the built-in utilities.</p>
+
+<p>Anyway, install Tailwind via yarn:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add tailwindcss
+</code></pre></div></div>
+
+<p>After that’s done, you’ll want to create a config file in the project root
+named <code class="highlighter-rouge">tailwind.config.js</code>. Here’s a skeletal config you can use:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// tailwind.config.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">purge</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="na">theme</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">extend</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="p">},</span>
+  <span class="na">variants</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Import the core tailwind styles in your <code class="highlighter-rouge">application.css</code> file:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@import</span> <span class="s1">"tailwindcss/base"</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s1">"tailwindcss/components"</span><span class="p">;</span>
+
+<span class="c">/* If you add other imports, they should go here. */</span>
+
+<span class="k">@import</span> <span class="s1">"tailwindcss/utilities"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Finally, update your PostCSS config in the project root. You’ll need to include
+<code class="highlighter-rouge">tailwindcss</code> and <code class="highlighter-rouge">autoprefixer</code>, so your file might end up looking like this:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// In postcss.config.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">tailwindcss</span><span class="dl">'</span><span class="p">),</span>
+    <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">autoprefixer</span><span class="dl">'</span><span class="p">),</span>
+    <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">postcss-import</span><span class="dl">'</span><span class="p">),</span>
+    <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">postcss-flexbugs-fixes</span><span class="dl">'</span><span class="p">),</span>
+    <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">postcss-preset-env</span><span class="dl">'</span><span class="p">)({</span>
+      <span class="na">autoprefixer</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">flexbox</span><span class="p">:</span> <span class="dl">'</span><span class="s1">no-2009</span><span class="dl">'</span>
+      <span class="p">},</span>
+      <span class="na">stage</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="p">})</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="purgecss">PurgeCSS</h3>
+
+<p>Eventually, you’ll want to <a href="https://stimulus.hotwire.dev/">set up PurgeCSS</a> for use in production, but I
+don’t want to spend too much time on that here. Make sure to read that page
+so you understand what’s happening, and then you’ll want to add a <code class="highlighter-rouge">purge</code>
+section to your Tailwind config that will look something like this:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// In tailwind.config.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">purge</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">content</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">./app/views/**/*.html.erb</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">./app/views/**/*.js.erb</span><span class="dl">"</span><span class="p">],</span>
+  <span class="p">},</span>
+  <span class="c1">// The rest of your config goes here.</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I highly recommend that you <a href="https://stimulus.hotwire.dev/">read that page about PurgeCSS</a>, because it has
+important information on how you need to write your views so the purge will
+work properly. Without purge, you will end up with oversized asset files.</p>
+
+<h2 id="stimulus-setup">Stimulus Setup</h2>
+
+<p>Let’s get <a href="https://stimulus.hotwire.dev/">Stimulus</a> working. First, install it with yarn:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add stimulus
+</code></pre></div></div>
+
+<p>Then all you need to do is load Stimulus and your controllers:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// In app/javascript/packs/application.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Application</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">stimulus</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">definitionsFromContext</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">stimulus/webpack-helpers</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">application</span> <span class="o">=</span> <span class="nx">Application</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">context</span> <span class="o">=</span> <span class="nx">require</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="dl">"</span><span class="s2">../controllers</span><span class="dl">"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">js$/</span><span class="p">);</span>
+<span class="nx">application</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">definitionsFromContext</span><span class="p">(</span><span class="nx">context</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>That configuration will cause your app to look for Stimulus controllers in
+<code class="highlighter-rouge">app/javascript/controllers/</code>.</p>
+
+<h2 id="running">Running</h2>
+
+<p>At this point, you should be good to go. Start up the webpack dev server from
+your apps’s root directory so your app will hot reload when any changes are
+made to your CSS or JS:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/webpack-dev-server
+</code></pre></div></div>
+
+<p>Then you can start up the Rails server and get hacking!</p>
+
+<h2 id="feedback">Feedback</h2>
+
+<p>Questions, comments, or tips for me? See a mistake in this post? <a href="mailto:hello@davidgay.org">Send me an
+email.</a></p>
+
+
+  </div>
+
+  
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <p>
+      
+
+&copy; David Gay - <a href="mailto:hello@davidgay.org">Email</a> me - <a href="https://www.buymeacoffee.com/davidgay">Buy me a tea</a> - Subscribe via <a href="https://davidgay.org/feed.xml">RSS</a>
+<script data-goatcounter="https://davidgay.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+    </p>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
