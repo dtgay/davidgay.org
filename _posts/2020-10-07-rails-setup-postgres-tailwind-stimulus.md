@@ -3,13 +3,22 @@ layout: post
 category: programming
 tags: ruby rails postgres tailwind stimulus
 date: 2020-10-07 17:00:00
+updated: 2021-01-18 14:00:00
 description: >-
   How to set up a new Rails project with PostgreSQL, Tailwind CSS, and
   Stimulus.
 title: Rails Setup with PostgreSQL, Tailwind CSS, and Stimulus
 ---
 
-TODO: Add intro here.
+This is a brief tutorial detailing how I've set up new Rails 6 apps with
+PostgreSQL, [Tailwind CSS](https://tailwindcss.com/), and
+[Stimulus](https://stimulus.hotwire.dev/).
+
+**Update:** I wrote this post back in October, and for whatever reason I never
+published it. I'm publishing it now, backdated to emphasize that I make no
+guarantees that everything in here is up-to-date. I will say, however, that
+with the [Hotwire](https://hotwire.dev/) announcement and Tailwind 2.0, a
+setup like this has become even *more* attractive.
 
 <!-- more -->
 
@@ -299,4 +308,4 @@ email.](mailto:hello@davidgay.org)
 [3]: https://github.com/rbenv/rbenv
 [4]: https://tailwindcss.com/docs/using-with-preprocessors
 [5]: https://tailwindcss.com/
-[6]: https://stimulusjs.org/
+[6]: https://stimulus.hotwire.dev/
