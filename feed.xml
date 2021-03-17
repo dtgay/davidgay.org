@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2021-01-18T14:40:08-05:00</updated>
+  <updated>2021-03-17T15:57:17-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -750,7 +750,7 @@ I’ve tried feels noticeably worse and doesn’t work as well (or as often).&lt
 you’re missing out. That’s all there is to say. Install iTerm, get yourself
 a nice theme, and learn some shortcuts.&lt;/p&gt;
 
-&lt;p&gt;I used &lt;a href=&quot;https://en.wikipedia.org/wiki/Tmux&quot;&gt;Tmux&lt;/a&gt; with iTerm for a while since I was used to in on Linux. I
+&lt;p&gt;I used &lt;a href=&quot;https://en.wikipedia.org/wiki/Tmux&quot;&gt;Tmux&lt;/a&gt; with iTerm for a while since I used tmux on Linux. I
 eventually dropped it because iTerm can do all the things I used tmux for,
 plus OS-native window and tab management.&lt;/p&gt;
 
