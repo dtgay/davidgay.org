@@ -54,7 +54,7 @@ I've tried feels noticeably worse and doesn't work as well (or as often).
 you're missing out. That's all there is to say. Install iTerm, get yourself
 a nice theme, and learn some shortcuts.
 
-I used [Tmux][5] with iTerm for a while since I was used to in on Linux. I
+I used [Tmux][5] with iTerm for a while since I used tmux on Linux. I
 eventually dropped it because iTerm can do all the things I used tmux for,
 plus OS-native window and tab management.
 
