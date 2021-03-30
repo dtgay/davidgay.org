@@ -5,7 +5,7 @@
   
   <link href="https://davidgay.org/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://davidgay.org/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2021-03-17T15:57:17-04:00</updated>
+  <updated>2021-03-30T11:30:23-04:00</updated>
   <id>https://davidgay.org//</id>
 
   
@@ -307,6 +307,9 @@ made to your CSS or JS:&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Then you can start up the Rails server and get hacking!&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
 
