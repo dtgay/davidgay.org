@@ -298,6 +298,10 @@ made to your CSS or JS:
 
 Then you can start up the Rails server and get hacking!
 
+```sh
+rails s
+```
+
 ## Feedback
 
 Questions, comments, or tips for me? See a mistake in this post? [Send me an
